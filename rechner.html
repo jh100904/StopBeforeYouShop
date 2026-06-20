@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rechner – Stop. Before You Shop.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ SLIDE MENU ============ -->
+<div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
+<aside class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-label="Navigation">
+  <div class="menu-top">
+    <span class="menu-brand">STOP.<br>BEFORE YOU SHOP.</span>
+    <button class="menu-close" id="menuClose" aria-label="Menü schließen">✕</button>
+  </div>
+  <nav class="menu-items" aria-label="Hauptmenü">
+    <a href="index.html">Startseite <span>↗</span></a>
+    <a href="challenge.html">Challenge <span>↗</span></a>
+    <a href="selbsttest.html">Selbsttest <span>↗</span></a>
+    <a href="rechner.html">Rechner <span>↗</span></a>
+    <a href="tipps.html">Tipps <span>↗</span></a>
+    <a href="index.html#videos">Videos <span>↗</span></a>
+    <a href="index.html#erfahrungen">Erfahrungen <span>↗</span></a>
+    <a href="index.html#hilfsangebote">Hilfsangebote <span>↗</span></a>
+  </nav>
+  <img class="menu-mascot" src="assets/mascot-run-cyan-trim.png" alt="">
+</aside>
+
+<!-- ============ NAV ============ -->
+<nav class="site-nav" aria-label="Hauptnavigation">
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html" aria-label="Stop. Before You Shop. – Startseite">
+      <img src="assets/mascot-head-trim.png" alt="">
+      <span class="nav-logo-text">STOP.<br>BEFORE YOU SHOP.</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Startseite</a>
+      <a href="challenge.html">Challenge</a>
+      <a href="selbsttest.html">Selbsttest</a>
+      <a href="rechner.html" class="active">Rechner</a>
+      <a href="tipps.html">Tipps</a>
+      <a href="index.html#hilfsangebote">Hilfe</a>
+    </div>
+    <div class="nav-right">
+      <button class="icon-btn hamburger-btn" id="hamburgerBtn" aria-label="Menü öffnen" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ TOOL HERO ============ -->
+<section class="tool-hero th-plain" data-screen-label="Rechner">
+  <span class="th-index">03</span>
+  <span class="th-dot d1"></span><span class="th-dot d2"></span><span class="th-dot d3"></span>
+  <div class="wrap">
+    <div class="th-copy">
+      <span class="eyebrow reveal">Der Realitäts-Check</span>
+      <h2 class="sec-head xl reveal">Was kostet dich das wirklich?</h2>
+      <p class="sec-lead lg reveal">Rechne einen Preis in Arbeitszeit um. Manchmal sieht ein Kauf dann ganz anders aus.</p>
+      <div class="th-cta reveal"><a class="btn btn-red btn-sm" href="#rechner" data-nav>Zum Rechner <span class="arr">→</span></a></div>
+    </div>
+    <div class="th-convert reveal" aria-hidden="true">
+      <span class="cv-cap">Zum Beispiel</span>
+      <div class="cv-price">139 €</div>
+      <div class="cv-arrow">↓</div>
+      <div class="cv-time">
+        <span class="cv-big">10 Stunden</span>
+        <span class="cv-sub">Arbeitszeit (Mindestlohn)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TICKER ============ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span><b>Trends vergehen</b><i class="ticker-dot"></i><b>Schulden bleiben</b><i class="ticker-dot"></i><b>Warte 3 Tage</b><i class="ticker-dot"></i><b>Bewusster konsumieren</b><i class="ticker-dot"></i></span>
+    <span><b>Trends vergehen</b><i class="ticker-dot"></i><b>Schulden bleiben</b><i class="ticker-dot"></i><b>Warte 3 Tage</b><i class="ticker-dot"></i><b>Bewusster konsumieren</b><i class="ticker-dot"></i></span>
+  </div>
+</div>
+
+<!-- ============ RECHNER ============ -->
+<section id="rechner" class="sec-pad" data-screen-label="Rechner">
+  <div class="wrap">
+    <div class="rechner-card reveal">
+      <div class="r-field">
+        <label for="preis">Preis des Artikels (€)</label>
+        <div class="r-row"><input class="field" type="number" id="preis" placeholder="z. B. 120" min="0" step="0.01" inputmode="decimal"></div>
+      </div>
+      <div class="r-field">
+        <label for="lohn">Dein Stundenlohn (€/h)</label>
+        <div class="r-row">
+          <input class="field" type="number" id="lohn" placeholder="z. B. 14,00" min="0" step="0.01" inputmode="decimal">
+          <button class="btn btn-dark btn-sm" id="useMindestlohn" style="border-radius:12px;">Mindestlohn (13,90 €)</button>
+        </div>
+      </div>
+      <div class="r-empty" id="rechnerEmpty">Gib Preis und Stundenlohn ein, um dein Ergebnis zu sehen.</div>
+      <div class="rechner-result" id="rechnerResult">
+        <div class="r-hours" id="rHours"></div>
+        <div class="r-context" id="rContext"></div>
+        <div class="r-tagline">Ist es das wirklich wert?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEHR ENTDECKEN ============ -->
+<section class="sec-pad band-cyan" data-screen-label="Mehr entdecken">
+  <div class="wrap">
+    <span class="eyebrow on-cyan reveal">Mehr entdecken</span>
+    <h2 class="sec-head sm reveal">Noch nicht genug?</h2>
+    <div class="cross-grid reveal">
+      <a class="cross-card" href="challenge.html">
+        <span class="cross-thumb"><img src="assets/mascot-selfie-trim.png" alt=""></span>
+        <span class="cross-label">Challenge</span>
+        <span class="cross-sub">3 Tage warten & Wunsch parken</span>
+        <span class="cross-go">Entdecken <span class="arr">→</span></span>
+      </a>
+      <a class="cross-card" href="selbsttest.html">
+        <span class="cross-thumb"><img src="assets/mascot-wave-trim.png" alt=""></span>
+        <span class="cross-label">Selbsttest</span>
+        <span class="cross-sub">Wie trendanfällig bist du?</span>
+        <span class="cross-go">Entdecken <span class="arr">→</span></span>
+      </a>
+      <a class="cross-card" href="tipps.html">
+        <span class="cross-thumb"><img src="assets/mascot-standing-trim.png" alt=""></span>
+        <span class="cross-label">Tipps</span>
+        <span class="cross-sub">9 Strategien gegen Impulskäufe</span>
+        <span class="cross-go">Entdecken <span class="arr">→</span></span>
+      </a>
+    </div>
+    <div style="margin-top:28px;"><a class="btn btn-dark" href="index.html">← Zurück zur Startseite</a></div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer data-screen-label="Footer">
+  <div class="footer-logo">STOP. BEFORE YOU SHOP.</div>
+  <div class="footer-tag">Trends vergehen. Schulden bleiben.</div>
+  <img class="footer-mascot" src="assets/mascot-run-cyan-trim.png" alt="Rennendes Maskottchen">
+  <div class="footer-bar">© 2024 Stop. Before You Shop. · Bildungsprojekt · Alle Rechte vorbehalten</div>
+</footer>
+
+<button id="scroll-top" aria-label="Nach oben scrollen">↑</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ============ TWEAKS PANEL (React island) ============ -->
+<div id="tweaks-root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="sbys-tweaks.jsx"></script>
+<script src="script.js"></script>
+</body>
+</html>

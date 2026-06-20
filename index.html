@@ -6,543 +6,8 @@
 <title>Stop. Before You Shop.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --cyan: #00C8C8;
-    --cyan-deep: #00A6A6;
-    --mint: #C8F0F0;
-    --mint-soft: #E2F8F8;
-    --red: #E8173A;
-    --red-deep: #C20E2E;
-    --dark: #1A1A1A;
-    --paper: #EAF8F8;
-    --white: #ffffff;
-    --radius: 16px;
-    --radius-lg: 26px;
-    --shadow: 0 6px 22px rgba(10,40,40,0.10);
-    --shadow-lift: 0 16px 40px rgba(10,40,40,0.18);
-    --maxw: 1180px;
-    --ease: cubic-bezier(.4,0,.2,1);
-  }
-
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-
-  body {
-    background: var(--paper);
-    color: var(--dark);
-    font-family: 'Inter', system-ui, sans-serif;
-    overflow-x: hidden;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .anton, h1, h2, h3 {
-    font-family: 'Anton', sans-serif;
-    font-weight: 400;
-    letter-spacing: 0.01em;
-    line-height: 0.98;
-  }
-
-  img { display: block; max-width: 100%; }
-  a { color: inherit; }
-
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
-
-  /* ============ BUTTONS ============ */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    line-height: 1;
-    padding: 15px 26px;
-    border: none;
-    border-radius: 999px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s, color .18s;
-    white-space: nowrap;
-  }
-  .btn:hover { transform: translateY(-3px); }
-  .btn:active { transform: translateY(-1px); }
-  .btn-red { background: var(--red); color: #fff; box-shadow: 0 8px 20px rgba(232,23,58,.32); }
-  .btn-red:hover { box-shadow: 0 14px 30px rgba(232,23,58,.42); }
-  .btn-cyan { background: var(--cyan); color: var(--dark); box-shadow: 0 8px 20px rgba(0,200,200,.30); }
-  .btn-cyan:hover { box-shadow: 0 14px 30px rgba(0,200,200,.40); }
-  .btn-dark { background: var(--dark); color: #fff; }
-  .btn-ghost { background: rgba(255,255,255,.16); color: #fff; border: 2px solid rgba(255,255,255,.5); }
-  .btn-ghost:hover { background: rgba(255,255,255,.28); }
-  .btn-outline { background: var(--white); color: var(--red); border: 2px solid var(--red); }
-  .btn-outline:hover { background: var(--red); color: #fff; }
-  .btn .arr { font-size: 1.15em; transition: transform .18s var(--ease); }
-  .btn:hover .arr { transform: translateX(4px); }
-  .btn-sm { padding: 11px 18px; font-size: .9rem; }
-
-  /* ============ NAV ============ */
-  nav.site-nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: var(--cyan);
-    box-shadow: 0 2px 0 rgba(0,0,0,.06), 0 10px 24px rgba(0,120,120,.12);
-  }
-  .nav-inner {
-    max-width: var(--maxw);
-    margin: 0 auto;
-    padding: 12px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-  .nav-logo img { width: 46px; height: 46px; transition: transform .3s var(--ease); }
-  .nav-logo:hover img { transform: rotate(-8deg) scale(1.06); }
-  .nav-logo-text {
-    font-family: 'Anton', sans-serif;
-    color: var(--red);
-    font-size: 1.06rem;
-    line-height: 0.92;
-    letter-spacing: .02em;
-  }
-  .nav-links {
-    display: flex;
-    gap: 4px;
-    font-family: 'Anton', sans-serif;
-    font-size: 1rem;
-    letter-spacing: .03em;
-  }
-  .nav-links a {
-    color: var(--dark);
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 999px;
-    transition: background .18s, color .18s;
-  }
-  .nav-links a:hover { background: rgba(26,26,26,.09); }
-  .nav-right { display: flex; align-items: center; gap: 8px; }
-  .icon-btn {
-    background: rgba(255,255,255,.0);
-    border: none;
-    cursor: pointer;
-    color: var(--dark);
-    width: 44px; height: 44px;
-    border-radius: 999px;
-    display: flex; align-items: center; justify-content: center;
-    transition: background .18s;
-  }
-  .icon-btn:hover { background: rgba(26,26,26,.10); }
-  .icon-btn svg { width: 22px; height: 22px; }
-  .hamburger-btn { display: none; }
-
-  /* ============ SLIDE MENU ============ */
-  .menu-overlay {
-    position: fixed; inset: 0;
-    background: rgba(10,30,30,.5);
-    z-index: 200; opacity: 0; pointer-events: none;
-    transition: opacity .3s; backdrop-filter: blur(2px);
-  }
-  .menu-overlay.open { opacity: 1; pointer-events: all; }
-  .menu-panel {
-    position: fixed; top: 0; right: 0;
-    width: 360px; max-width: 88vw; height: 100%;
-    background: var(--red);
-    z-index: 201; padding: 26px 30px 40px;
-    transform: translateX(105%);
-    transition: transform .38s var(--ease);
-    display: flex; flex-direction: column;
-    box-shadow: -20px 0 50px rgba(0,0,0,.25);
-  }
-  .menu-panel.open { transform: translateX(0); }
-  .menu-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-  .menu-brand { font-family: 'Anton',sans-serif; color: var(--mint); font-size: 1.1rem; line-height: .9; }
-  .menu-close {
-    background: rgba(255,255,255,.14); border: none; color: #fff;
-    width: 44px; height: 44px; border-radius: 999px; font-size: 1.3rem; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; transition: background .18s, transform .18s;
-  }
-  .menu-close:hover { background: rgba(255,255,255,.26); transform: rotate(90deg); }
-  .menu-items { display: flex; flex-direction: column; margin-top: 6px; }
-  .menu-items a {
-    font-family: 'Anton', sans-serif;
-    font-size: 1.9rem;
-    color: rgba(255,255,255,.92);
-    text-decoration: none;
-    letter-spacing: .02em;
-    padding: 13px 0;
-    border-bottom: 1px solid rgba(255,255,255,.16);
-    display: flex; align-items: center; justify-content: space-between;
-    transition: color .18s, padding-left .2s var(--ease);
-  }
-  .menu-items a:hover { color: var(--mint); padding-left: 8px; }
-  .menu-items a span { font-size: 1.1rem; opacity: .55; }
-  .menu-mascot { margin-top: auto; align-self: center; width: 130px; opacity: .96; }
-
-  /* ============ SECTION SHELL ============ */
-  section { position: relative; }
-  .sec-pad { padding: 84px 0; }
-  .band-cyan { background: var(--cyan); }
-  .band-red { background: var(--red); color: #fff; }
-  .eyebrow {
-    font-family: 'Inter',sans-serif; font-weight: 800;
-    font-size: .82rem; letter-spacing: .18em; text-transform: uppercase;
-    color: var(--red); margin-bottom: 16px;
-  }
-  .band-red .eyebrow, .band-cyan .eyebrow.on-cyan { color: var(--dark); }
-  .sec-head {
-    font-size: clamp(2.1rem, 5.2vw, 3.6rem);
-    text-transform: uppercase; color: var(--dark);
-    margin-bottom: 14px; max-width: 18ch;
-    text-wrap: balance;
-  }
-  .band-red .sec-head { color: #fff; }
-  .sec-lead { font-size: 1.08rem; max-width: 56ch; color: #2a3a3a; }
-  .band-red .sec-lead { color: rgba(255,255,255,.92); }
-
-  /* ============ HERO ============ */
-  #hero { background: var(--cyan); overflow: hidden; }
-  .hero-inner {
-    max-width: var(--maxw); margin: 0 auto;
-    padding: 56px 24px 64px;
-    display: grid;
-    grid-template-columns: 1.15fr .85fr;
-    gap: 28px; align-items: center;
-  }
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-weight: 800; font-size: .8rem; letter-spacing: .16em; text-transform: uppercase;
-    color: var(--red); background: var(--mint);
-    padding: 8px 16px; border-radius: 999px; margin-bottom: 22px;
-  }
-  .hero-eyebrow .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--red); }
-  .hero h1 {
-    font-size: clamp(3.1rem, 9vw, 6.6rem);
-    color: var(--red);
-    text-transform: uppercase;
-    margin-bottom: 18px;
-  }
-  .hero h1 .pd { color: var(--red); }
-  .hero-sub {
-    font-family: 'Anton',sans-serif;
-    font-size: clamp(1.1rem, 2.4vw, 1.7rem);
-    text-transform: uppercase; color: var(--dark);
-    letter-spacing: .03em; margin-bottom: 22px;
-  }
-  .hero-body { font-size: 1.06rem; max-width: 50ch; color: #16403f; margin-bottom: 28px; }
-  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
-  .hero-art { position: relative; display: flex; justify-content: center; align-items: center; }
-  .hero-art img { width: min(100%, 460px); filter: drop-shadow(0 22px 40px rgba(0,90,90,.28)); animation: floaty 5s ease-in-out infinite; }
-  @keyframes floaty { 0%,100%{ transform: translateY(0) rotate(0deg);} 50%{ transform: translateY(-16px) rotate(2deg);} }
-
-  /* hero teaser story strip */
-  .hero-teaser {
-    max-width: var(--maxw); margin: 0 auto;
-    padding: 0 24px 70px;
-  }
-  .teaser-card {
-    background: var(--white); border-radius: var(--radius-lg);
-    padding: 26px 30px; box-shadow: var(--shadow);
-    display: grid; grid-template-columns: auto 1fr auto; gap: 22px; align-items: center;
-  }
-  .teaser-badge {
-    width: 64px; height: 64px; border-radius: 999px; background: var(--mint);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden;
-  }
-  .teaser-badge img { width: 78%; }
-  .teaser-quote { min-height: 48px; transition: opacity .4s; }
-  .teaser-quote .tq-text { font-size: 1.04rem; color: #1c2b2b; font-weight: 500; }
-  .teaser-quote .tq-author { display: block; margin-top: 7px; font-weight: 700; color: var(--red); font-size: .9rem; }
-  .teaser-card .btn { flex-shrink: 0; }
-
-  /* ============ QUICK ACTIONS ============ */
-  .actions-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 38px;
-  }
-  .action-card {
-    background: var(--white); border-radius: var(--radius-lg);
-    padding: 24px 22px 22px; text-align: left;
-    border: none; cursor: pointer; font-family: inherit;
-    display: flex; flex-direction: column; gap: 12px;
-    box-shadow: var(--shadow);
-    transition: transform .2s var(--ease), box-shadow .2s var(--ease);
-    position: relative; overflow: hidden;
-  }
-  .action-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
-  .action-thumb {
-    width: 84px; height: 84px; border-radius: 20px; background: var(--mint);
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
-    transition: transform .25s var(--ease);
-  }
-  .action-card:nth-child(2n) .action-thumb { background: #ffd9df; }
-  .action-card:hover .action-thumb { transform: rotate(-6deg) scale(1.05); }
-  .action-thumb img { width: 76%; }
-  .action-num { position: absolute; top: 16px; right: 20px; font-family: 'Anton',sans-serif; font-size: 1.1rem; color: rgba(26,26,26,.13); }
-  .action-card h3 { font-size: 1.18rem; text-transform: uppercase; color: var(--dark); }
-  .action-card p { font-size: .92rem; color: #4a5a5a; flex: 1; }
-  .action-go {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-weight: 700; font-size: .9rem; color: var(--red); margin-top: 2px;
-  }
-  .action-card:hover .action-go .arr { transform: translateX(4px); }
-  .action-go .arr { transition: transform .18s var(--ease); }
-
-  /* ============ VIDEO SLIDER ============ */
-  .vslider { position: relative; margin-top: 36px; }
-  .vtrack-outer { overflow: hidden; padding: 6px; margin: -6px; }
-  .vtrack { display: flex; gap: 22px; transition: transform .45s var(--ease); }
-  .vslide { flex: 0 0 calc(50% - 11px); }
-  .vcard {
-    background: var(--white); border-radius: var(--radius);
-    overflow: hidden; box-shadow: var(--shadow); height: 100%;
-    transition: transform .2s var(--ease), box-shadow .2s var(--ease);
-  }
-  .vcard:hover { transform: translateY(-5px); box-shadow: var(--shadow-lift); }
-  .vthumb {
-    aspect-ratio: 16/9; position: relative;
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
-  }
-  .vthumb img.v-mascot { width: 38%; filter: drop-shadow(0 10px 18px rgba(0,0,0,.14)); }
-  .vthumb.t-cyan { background: linear-gradient(140deg, #00C8C8, #00A6A6); }
-  .vthumb.t-mint { background: linear-gradient(140deg, #D6F6F6, #B6ECEC); }
-  .vthumb.t-red { background: linear-gradient(140deg, #E8173A, #C20E2E); }
-  .v-duration {
-    position: absolute; bottom: 12px; right: 12px;
-    background: rgba(10,20,20,.72); color: #fff;
-    font-size: .76rem; font-weight: 700; padding: 4px 9px; border-radius: 7px;
-  }
-  .v-status {
-    position: absolute; top: 12px; left: 12px;
-    font-size: .72rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
-    padding: 5px 11px; border-radius: 999px;
-  }
-  .v-status.live { background: var(--red); color: #fff; }
-  .v-status.soon { background: rgba(255,255,255,.9); color: var(--dark); }
-  .v-play {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; background: rgba(0,0,0,0); transition: background .2s;
-  }
-  .v-play:hover { background: rgba(0,0,0,.12); }
-  .v-play .pcircle {
-    width: 62px; height: 62px; border-radius: 999px; background: var(--white); color: var(--red);
-    display: flex; align-items: center; justify-content: center; font-size: 1.3rem; padding-left: 4px;
-    box-shadow: 0 8px 22px rgba(0,0,0,.25); transition: transform .2s var(--ease);
-  }
-  .v-play:hover .pcircle { transform: scale(1.1); }
-  .vmeta { padding: 16px 18px 18px; }
-  .vmeta .vtag { font-size: .74rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--cyan-deep); }
-  .vmeta h4 { font-family: 'Anton',sans-serif; font-size: 1.18rem; text-transform: uppercase; margin: 7px 0 4px; color: var(--dark); }
-  .vmeta p { font-size: .88rem; color: #5a6a6a; }
-  .vnav { display: flex; gap: 10px; justify-content: flex-end; margin-top: 22px; }
-  .slider-arrow {
-    background: var(--red); color: #fff; border: none;
-    width: 50px; height: 50px; border-radius: 999px; cursor: pointer;
-    font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 8px 20px rgba(232,23,58,.3); transition: transform .18s var(--ease), opacity .18s, box-shadow .18s;
-  }
-  .slider-arrow:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(232,23,58,.42); }
-  .slider-arrow:disabled { opacity: .32; cursor: default; }
-
-  /* ============ CHALLENGE ============ */
-  .challenge-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 34px; align-items: start; margin-top: 40px; }
-  .challenge-lead p { font-size: 1.08rem; color: #243434; margin-bottom: 22px; }
-  .hashtag-band {
-    display: flex; align-items: center; gap: 14px;
-    background: var(--red); color: #fff; border-radius: var(--radius);
-    padding: 18px 22px; font-weight: 600; box-shadow: 0 10px 26px rgba(232,23,58,.24);
-  }
-  .hashtag-band .ht-ico { font-size: 1.5rem; line-height: 1; }
-  .hashtag-band strong { white-space: nowrap; }
-  .timer-card { background: var(--white); border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow); }
-  .timer-card h3 { font-size: 1.3rem; text-transform: uppercase; margin-bottom: 6px; }
-  .timer-card .tc-sub { font-size: .92rem; color: #5a6a6a; margin-bottom: 20px; }
-  .timer-form { display: flex; flex-direction: column; gap: 12px; }
-  .field {
-    width: 100%; padding: 15px 18px; border-radius: 12px;
-    border: 2px solid var(--mint); background: var(--mint-soft);
-    font-family: 'Inter',sans-serif; font-size: 1rem; color: var(--dark);
-    outline: none; transition: border-color .18s, background .18s;
-  }
-  .field::placeholder { color: #8aa0a0; }
-  .field:focus { border-color: var(--red); background: #fff; }
-  .timer-display { margin-top: 22px; background: var(--red); color: #fff; border-radius: var(--radius); padding: 24px; text-align: center; display: none; }
-  .timer-display.active { display: block; animation: pop .4s var(--ease); }
-  @keyframes pop { from { transform: scale(.94); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .timer-display .ti-name { font-size: .9rem; opacity: .88; margin-bottom: 14px; }
-  .timer-clock { display: flex; justify-content: center; gap: 10px; }
-  .clock-unit { background: rgba(255,255,255,.14); border-radius: 12px; padding: 12px 6px; min-width: 66px; }
-  .clock-unit .cu-num { font-family: 'Anton',sans-serif; font-size: 2.1rem; line-height: 1; }
-  .clock-unit .cu-lab { font-size: .64rem; text-transform: uppercase; letter-spacing: .1em; opacity: .82; margin-top: 6px; }
-  .timer-done { display: none; margin-top: 18px; font-weight: 700; font-size: 1.05rem; }
-  .social-proof { display: grid; gap: 14px; }
-  .sp-card { background: var(--white); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); font-size: .92rem; color: #2a3a3a; line-height: 1.55; }
-  .sp-card .sp-name { font-weight: 800; color: var(--red); margin-bottom: 5px; font-size: .86rem; }
-  .social-proof { grid-template-columns: 1fr 1fr; }
-
-  /* ============ TIPPS ============ */
-  .accordion { display: flex; flex-direction: column; gap: 12px; margin-top: 38px; }
-  .acc-item { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
-  .acc-head {
-    width: 100%; background: none; border: none; cursor: pointer;
-    display: flex; align-items: center; gap: 16px; padding: 22px 24px;
-    text-align: left; transition: background .18s;
-  }
-  .acc-head:hover { background: var(--mint-soft); }
-  .acc-num { font-family: 'Anton',sans-serif; font-size: 1.2rem; color: var(--red); width: 40px; flex-shrink: 0; }
-  .acc-title { flex: 1; font-family: 'Anton',sans-serif; font-size: 1.18rem; text-transform: uppercase; color: var(--dark); letter-spacing: .02em; }
-  .acc-icon { width: 34px; height: 34px; border-radius: 999px; background: var(--mint); color: var(--red);
-    display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0;
-    transition: transform .3s var(--ease), background .2s, color .2s; }
-  .acc-item.open .acc-icon { transform: rotate(45deg); background: var(--red); color: #fff; }
-  .acc-body { max-height: 0; overflow: hidden; transition: max-height .38s var(--ease); }
-  .acc-body-inner { padding: 0 24px 24px 80px; font-size: 1rem; color: #36464 6; color: #364646; line-height: 1.7; }
-
-  /* ============ QUIZ ============ */
-  #quiz .wrap { max-width: 720px; }
-  .quiz-progress-wrap { display: flex; align-items: center; gap: 14px; margin: 34px 0 26px; }
-  .progress-track { flex: 1; height: 12px; background: rgba(255,255,255,.32); border-radius: 999px; overflow: hidden; }
-  .progress-fill { height: 100%; width: 0; background: var(--mint); border-radius: 999px; transition: width .45s var(--ease); }
-  .progress-label { font-weight: 800; font-size: .9rem; color: #fff; white-space: nowrap; }
-  .quiz-card { background: var(--white); border-radius: var(--radius-lg); padding: 44px 36px; text-align: center; box-shadow: var(--shadow-lift); }
-  .quiz-card .q-num { font-size: .82rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--cyan-deep); margin-bottom: 18px; }
-  .quiz-card .q-text { font-family: 'Anton',sans-serif; font-size: clamp(1.4rem, 3vw, 2rem); text-transform: uppercase; color: var(--dark); margin-bottom: 34px; line-height: 1.05; }
-  .quiz-answers { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
-  .quiz-btn {
-    background: var(--mint-soft); color: var(--dark); border: 2px solid var(--mint);
-    border-radius: 14px; padding: 18px 14px; font-family: 'Inter',sans-serif; font-weight: 700; font-size: 1rem;
-    cursor: pointer; transition: transform .16s var(--ease), background .18s, color .18s, border-color .18s;
-  }
-  .quiz-btn:hover { background: var(--red); border-color: var(--red); color: #fff; transform: translateY(-4px); }
-  .quiz-result { display: none; background: var(--white); border-radius: var(--radius-lg); padding: 44px 36px; text-align: center; box-shadow: var(--shadow-lift); }
-  .quiz-result.active { display: block; animation: pop .45s var(--ease); }
-  .result-emoji { width: 130px; margin: 0 auto 6px; }
-  .result-score { font-family: 'Anton',sans-serif; font-size: 3.4rem; color: var(--red); line-height: 1; }
-  .result-score small { font-size: 1.2rem; color: #8aa0a0; }
-  .result-label { font-family: 'Anton',sans-serif; font-size: 1.55rem; text-transform: uppercase; color: var(--dark); margin: 10px 0 12px; }
-  .result-text { color: #4a5a5a; font-size: 1rem; max-width: 46ch; margin: 0 auto; }
-  .result-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 28px; }
-
-  /* ============ RECHNER ============ */
-  #rechner .wrap { max-width: 660px; }
-  .rechner-card { background: var(--white); border-radius: var(--radius-lg); padding: 38px; box-shadow: var(--shadow); margin-top: 34px; }
-  .r-field { margin-bottom: 22px; }
-  .r-field label { display: block; font-weight: 700; margin-bottom: 9px; font-size: .96rem; }
-  .r-row { display: flex; gap: 10px; }
-  .r-row .field { flex: 1; }
-  .rechner-result { margin-top: 28px; padding-top: 28px; border-top: 2px dashed var(--mint); text-align: center; display: none; }
-  .rechner-result.active { display: block; animation: pop .4s var(--ease); }
-  .r-hours { font-family: 'Anton',sans-serif; font-size: clamp(1.6rem,4vw,2.4rem); color: var(--red); text-transform: uppercase; margin-bottom: 8px; line-height: 1.05; }
-  .r-context { font-size: 1rem; color: #4a5a5a; font-weight: 600; margin-bottom: 16px; }
-  .r-tagline { font-family: 'Anton',sans-serif; font-size: 1.3rem; text-transform: uppercase; color: var(--dark); }
-  .r-empty { text-align: center; color: #7a8a8a; font-size: .95rem; margin-top: 26px; }
-
-  /* ============ ERFAHRUNGEN ============ */
-  .stories-shell { position: relative; margin: 40px 0 14px; }
-  .stories-viewport { overflow: hidden; border-radius: var(--radius-lg); }
-  .stories-track { display: flex; transition: transform .45s var(--ease); }
-  .story-card { flex: 0 0 100%; background: var(--white); border-radius: var(--radius-lg); padding: 44px 48px; box-shadow: var(--shadow); }
-  .story-card .sc-quote { font-size: clamp(1.1rem, 2.4vw, 1.45rem); line-height: 1.5; color: #1c2b2b; font-weight: 500; }
-  .story-card .sc-author { display: block; margin-top: 20px; font-weight: 800; color: var(--red); }
-  .stories-shell .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); }
-  .stories-shell .slider-arrow.left { left: -22px; }
-  .stories-shell .slider-arrow.right { right: -22px; }
-  .stories-shell .slider-arrow:hover:not(:disabled) { transform: translateY(-50%) scale(1.08); }
-  .stories-dots { display: flex; gap: 9px; justify-content: center; margin: 18px 0 40px; }
-  .s-dot { width: 11px; height: 11px; border-radius: 999px; background: rgba(26,26,26,.2); border: none; cursor: pointer; transition: background .2s, transform .2s; padding: 0; }
-  .s-dot.active { background: var(--red); transform: scale(1.25); }
-  .submit-card { background: var(--white); border-radius: var(--radius-lg); padding: 34px; box-shadow: var(--shadow); display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: start; }
-  .submit-mascot { width: 120px; }
-  .submit-card h3 { font-size: 1.4rem; text-transform: uppercase; margin-bottom: 16px; }
-  .submit-card textarea { resize: vertical; min-height: 110px; margin-bottom: 8px; }
-  .char-count { font-size: .82rem; color: #7a8a8a; text-align: right; margin-bottom: 14px; }
-  .char-count.warn { color: var(--red); font-weight: 700; }
-  .submit-card input { margin-bottom: 16px; }
-
-  /* ============ HILFSANGEBOTE ============ */
-  .help-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; margin-top: 38px; }
-  .help-card { background: var(--white); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 10px; transition: transform .2s var(--ease), box-shadow .2s var(--ease); }
-  .help-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lift); }
-  .help-card h3 { font-size: 1.16rem; text-transform: uppercase; color: var(--red); }
-  .help-card p { font-size: .94rem; color: #45 5555; color: #455555; flex: 1; }
-  .help-card a { display: inline-flex; align-items: center; gap: 7px; font-weight: 700; font-size: .92rem; color: var(--dark); text-decoration: none; margin-top: 4px; }
-  .help-card a:hover { color: var(--red); }
-  .help-card a .arr { transition: transform .18s var(--ease); }
-  .help-card a:hover .arr { transform: translateX(4px); }
-
-  /* ============ FOOTER ============ */
-  footer { background: var(--red); color: #fff; padding: 70px 0 0; text-align: center; overflow: hidden; }
-  .footer-logo { font-family: 'Anton',sans-serif; font-size: clamp(2rem,5vw,3rem); letter-spacing: .02em; }
-  .footer-tag { color: var(--mint); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-top: 10px; font-size: .92rem; }
-  .footer-mascot { width: 180px; margin: 30px auto -6px; display: block; filter: drop-shadow(0 -8px 20px rgba(0,0,0,.18)); }
-  .footer-bar { background: rgba(0,0,0,.16); padding: 16px 24px; font-size: .8rem; color: rgba(255,255,255,.78); }
-
-  /* ============ SCROLL TOP ============ */
-  #scroll-top {
-    position: fixed; bottom: 28px; right: 28px; z-index: 90;
-    width: 52px; height: 52px; border-radius: 999px; border: none; cursor: pointer;
-    background: var(--red); color: #fff; font-size: 1.4rem;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 10px 26px rgba(232,23,58,.4);
-    opacity: 0; pointer-events: none; transform: translateY(14px) scale(.9);
-    transition: opacity .3s, transform .3s var(--ease);
-  }
-  #scroll-top.show { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
-  #scroll-top:hover { transform: translateY(-4px) scale(1.06); }
-
-  /* ============ TOAST ============ */
-  .toast {
-    position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 20px);
-    background: var(--dark); color: #fff; padding: 14px 22px; border-radius: 999px;
-    font-weight: 600; font-size: .94rem; z-index: 300;
-    opacity: 0; pointer-events: none; transition: opacity .3s, transform .3s var(--ease);
-    box-shadow: 0 12px 30px rgba(0,0,0,.3);
-  }
-  .toast.show { opacity: 1; transform: translate(-50%, 0); }
-
-  /* ============ FADE IN ============ */
-  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
-  .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
-    .hero-art img { animation: none; }
-    html { scroll-behavior: auto; }
-  }
-
-  /* ============ RESPONSIVE ============ */
-  @media (max-width: 980px) {
-    .actions-grid { grid-template-columns: 1fr 1fr; }
-    .hero-inner { grid-template-columns: 1fr; padding-top: 40px; padding-bottom: 36px; }
-    .hero-art { order: -1; }
-    .hero-art img { width: 240px; }
-    .challenge-grid { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 760px) {
-    .nav-links { display: none; }
-    .hamburger-btn { display: flex; }
-    .sec-pad { padding: 60px 0; }
-    .teaser-card { grid-template-columns: auto 1fr; }
-    .teaser-card .btn { grid-column: 1 / -1; justify-content: center; }
-    .vslide { flex: 0 0 100%; }
-    .social-proof { grid-template-columns: 1fr; }
-    .quiz-answers { grid-template-columns: 1fr; }
-    .submit-card { grid-template-columns: 1fr; }
-    .submit-mascot { display: none; }
-    .help-grid { grid-template-columns: 1fr; }
-    .stories-shell .slider-arrow.left { left: 6px; }
-    .stories-shell .slider-arrow.right { right: 6px; }
-    .story-card { padding: 32px 24px; }
-    .acc-body-inner { padding-left: 24px; }
-  }
-  @media (max-width: 460px) {
-    .actions-grid { grid-template-columns: 1fr; }
-    .clock-unit { min-width: 0; flex: 1; }
-    .hashtag-band { flex-wrap: wrap; }
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -554,34 +19,34 @@
     <button class="menu-close" id="menuClose" aria-label="Menü schließen">✕</button>
   </div>
   <nav class="menu-items" aria-label="Hauptmenü">
-    <a href="#challenge" data-nav>Challenge <span>↗</span></a>
-    <a href="#tipps" data-nav>Tipps <span>↗</span></a>
-    <a href="#quiz" data-nav>Quiz <span>↗</span></a>
-    <a href="#rechner" data-nav>Rechner <span>↗</span></a>
+    <a href="#hero" data-nav>Startseite <span>↗</span></a>
+    <a href="challenge.html">Challenge <span>↗</span></a>
+    <a href="selbsttest.html">Selbsttest <span>↗</span></a>
+    <a href="rechner.html">Rechner <span>↗</span></a>
+    <a href="tipps.html">Tipps <span>↗</span></a>
+    <a href="#videos" data-nav>Videos <span>↗</span></a>
     <a href="#erfahrungen" data-nav>Erfahrungen <span>↗</span></a>
     <a href="#hilfsangebote" data-nav>Hilfsangebote <span>↗</span></a>
   </nav>
-  <img class="menu-mascot" src="assets/mascot-wave-trim.png" alt="">
+  <img class="menu-mascot" src="assets/mascot-run-cyan-trim.png" alt="">
 </aside>
 
 <!-- ============ NAV ============ -->
 <nav class="site-nav" aria-label="Hauptnavigation">
-  <div class="nav-inner" style="color: rgb(92, 224, 229)">
+  <div class="nav-inner">
     <a class="nav-logo" href="#hero" data-nav aria-label="Stop. Before You Shop. – Startseite">
       <img src="assets/mascot-head-trim.png" alt="">
       <span class="nav-logo-text">STOP.<br>BEFORE YOU SHOP.</span>
     </a>
     <div class="nav-links">
-      <a href="#challenge" data-nav>Challenge</a>
-      <a href="#quiz" data-nav>Quiz</a>
-      <a href="#rechner" data-nav>Rechner</a>
-      <a href="#tipps" data-nav>Tipps</a>
-      <a href="#hilfsangebote" data-nav>Hilfsangebote</a>
+      <a href="#hero" data-nav class="active">Startseite</a>
+      <a href="challenge.html">Challenge</a>
+      <a href="selbsttest.html">Selbsttest</a>
+      <a href="rechner.html">Rechner</a>
+      <a href="tipps.html">Tipps</a>
+      <a href="#hilfsangebote" data-nav>Hilfe</a>
     </div>
     <div class="nav-right">
-      <button class="icon-btn" id="searchBtn" aria-label="Suche">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </button>
       <button class="icon-btn hamburger-btn" id="hamburgerBtn" aria-label="Menü öffnen" aria-expanded="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
       </button>
@@ -591,123 +56,96 @@
 
 <!-- ============ HERO ============ -->
 <section id="hero" data-screen-label="Hero">
-  <div class="hero-inner" style="color: rgb(92, 225, 230)">
+  <div class="hero-inner">
     <div class="hero-copy reveal">
       <span class="hero-eyebrow"><span class="dot"></span>Bewusster konsumieren</span>
-      <h1 style="color: rgb(197, 23, 46)">STOP.<br>BEFORE YOU&nbsp;SHOP.</h1>
+      <h1>STOP.<br>BEFORE YOU&nbsp;SHOP.</h1>
       <p class="hero-sub">Trends vergehen. Schulden bleiben.</p>
       <p class="hero-body">Du scrollst, du siehst, du kaufst – und bereust es kurz danach? Erkenne Impulskäufe, hinterfrage Trends und finde heraus, was ein Kauf dich <em>wirklich</em> kostet.</p>
       <div class="hero-cta">
-        <a class="btn btn-red" href="#quiz" data-nav>Mach den Test <span class="arr">→</span></a>
-        <a class="btn btn-cyan" href="#rechner" data-nav>Echte Kosten berechnen</a>
+        <a class="btn btn-red" href="selbsttest.html">Mach den Test <span class="arr">→</span></a>
+        <a class="btn btn-mint" href="rechner.html">Echte Kosten berechnen</a>
       </div>
     </div>
     <div class="hero-art reveal">
-      <img src="assets/mascot-run-trim.png" alt="Maskottchen rennt mit Geldschein in der Hand" style="scale:2;" >
+      <img id="hero-art-img" src="assets/mascot-run-trim.png" alt="Maskottchen rennt mit Geldschein in der Hand">
     </div>
   </div>
   <div class="hero-teaser reveal">
     <div class="teaser-card">
       <div class="teaser-badge"><img src="assets/mascot-head-trim.png" alt=""></div>
-      <div class="teaser-quote" id="teaserQuote">
-        <span class="tq-text">Lade Erfahrungen…</span>
-      </div>
+      <div class="teaser-quote" id="teaserQuote"><span class="tq-text">Lade Erfahrungen…</span></div>
       <a class="btn btn-outline btn-sm" href="#erfahrungen" data-nav>Alle Erfahrungen <span class="arr">→</span></a>
     </div>
   </div>
 </section>
 
+<!-- ============ TICKER ============ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span><b>Trends vergehen</b><i class="ticker-dot"></i><b>Schulden bleiben</b><i class="ticker-dot"></i><b>Warte 3 Tage</b><i class="ticker-dot"></i><b>Bewusster konsumieren</b><i class="ticker-dot"></i></span>
+    <span><b>Trends vergehen</b><i class="ticker-dot"></i><b>Schulden bleiben</b><i class="ticker-dot"></i><b>Warte 3 Tage</b><i class="ticker-dot"></i><b>Bewusster konsumieren</b><i class="ticker-dot"></i></span>
+  </div>
+</div>
+
 <!-- ============ QUICK ACTIONS ============ -->
 <section id="actions" class="sec-pad" data-screen-label="Was willst du tun">
   <div class="wrap">
     <span class="eyebrow reveal">Wo willst du anfangen?</span>
-    <h2 class="sec-head reveal">Mach den ersten Schritt.</h2>
-    <p class="sec-lead reveal">Vier Wege, bewusster mit deinem Geld umzugehen – such dir einen aus.</p>
+    <h2 class="sec-head xl reveal">Mach den ersten Schritt.</h2>
+    <p class="sec-lead lg reveal">Vier Wege, bewusster mit deinem Geld umzugehen – such dir einen aus.</p>
     <div class="actions-grid">
-      <button class="action-card reveal" data-scroll="#challenge">
+      <a class="action-card reveal" href="challenge.html">
         <span class="action-num">01</span>
-        <span class="action-thumb"><img src="assets/mascot-wave-trim.png" alt=""></span>
+        <span class="action-thumb thumb-photo"><img src="assets/mascot-selfie-trim.png" alt=""></span>
         <h3>Die Challenge</h3>
         <p>Warte 3 Tage vor dem Kauf. Schaffst du das?</p>
         <span class="action-go">Challenge starten <span class="arr">→</span></span>
-      </button>
-      <button class="action-card reveal" data-scroll="#tipps">
+      </a>
+      <a class="action-card reveal" href="tipps.html">
         <span class="action-num">02</span>
         <span class="action-thumb"><img src="assets/mascot-standing-trim.png" alt=""></span>
         <h3>Ich will Tipps</h3>
         <p>9 alltagstaugliche Strategien gegen Impulskäufe.</p>
         <span class="action-go">Tipps ansehen <span class="arr">→</span></span>
-      </button>
-      <button class="action-card reveal" data-scroll="#quiz">
+      </a>
+      <a class="action-card reveal" href="selbsttest.html">
         <span class="action-num">03</span>
-        <span class="action-thumb"><img src="assets/mascot-selfie-trim.png" alt=""></span>
-        <h3>Teste dein Wissen</h3>
+        <span class="action-thumb"><img src="assets/mascot-wave-trim.png" alt=""></span>
+        <h3>Teste dich</h3>
         <p>Wie trendanfällig bist du wirklich? 8 kurze Fragen.</p>
-        <span class="action-go">Quiz starten <span class="arr">→</span></span>
-      </button>
-      <button class="action-card reveal" data-scroll="#rechner">
+        <span class="action-go">Jetzt testen <span class="arr">→</span></span>
+      </a>
+      <a class="action-card reveal" href="rechner.html">
         <span class="action-num">04</span>
         <span class="action-thumb"><img src="assets/mascot-run-trim.png" alt=""></span>
         <h3>Der Rechner</h3>
         <p>Wie viele Stunden arbeitest du für deinen Artikel?</p>
         <span class="action-go">Jetzt rechnen <span class="arr">→</span></span>
-      </button>
+      </a>
     </div>
 
-    <!-- VIDEO SLIDER -->
-    <div style="margin-top:64px;">
+    <div class="tip-day reveal" id="tipOfDay">
+      <div class="tip-day-badge"><img src="assets/mascot-head-trim.png" alt=""></div>
+      <div class="tip-day-body">
+        <span class="tip-day-eyebrow">Tipp des Tages</span>
+        <h3 class="tip-day-title" id="tipDayTitle">…</h3>
+        <p class="tip-day-text" id="tipDayText"></p>
+        <a class="tip-day-link" href="tipps.html">Alle 9 Tipps ansehen <span class="arr">→</span></a>
+      </div>
+    </div>
+
+    <div id="videos" style="margin-top:64px;" data-screen-label="Videos">
       <span class="eyebrow reveal">Reinschauen</span>
       <h2 class="sec-head reveal">Konsum &amp; du – die Videoreihe.</h2>
       <div class="vslider reveal">
         <div class="vtrack-outer">
           <div class="vtrack" id="vtrack">
-            <div class="vslide">
-              <article class="vcard">
-                <div class="vthumb t-cyan">
-                  <img class="v-mascot" src="assets/mascot-head-trim.png" alt="">
-                  <span class="v-status live">Jetzt verfügbar</span>
-                  <span class="v-duration">4:12</span>
-                  <div class="v-play" data-video="Klamotten &amp; Konsum"><span class="pcircle">▶</span></div>
-                </div>
-                <div class="vmeta"><span class="vtag">Folge 01</span><h4>Klamotten &amp; Konsum</h4><p>Warum der Kleiderschrank nie voll genug ist.</p></div>
-              </article>
-            </div>
-            <div class="vslide">
-              <article class="vcard">
-                <div class="vthumb t-mint">
-                  <img class="v-mascot" src="assets/mascot-standing-trim.png" alt="">
-                  <span class="v-status soon">Demnächst</span>
-                </div>
-                <div class="vmeta"><span class="vtag">Folge 02</span><h4>Bücher &amp; Konsum</h4><p>Gelesen oder nur gekauft? Der Stapel wächst.</p></div>
-              </article>
-            </div>
-            <div class="vslide">
-              <article class="vcard">
-                <div class="vthumb t-red">
-                  <img class="v-mascot" src="assets/mascot-selfie-trim.png" alt="">
-                  <span class="v-status soon">Demnächst</span>
-                </div>
-                <div class="vmeta"><span class="vtag">Folge 03</span><h4>Technologie &amp; Konsum</h4><p>Jedes Jahr ein neues Gerät – muss das sein?</p></div>
-              </article>
-            </div>
-            <div class="vslide">
-              <article class="vcard">
-                <div class="vthumb t-mint">
-                  <img class="v-mascot" src="assets/mascot-wave-trim.png" alt="">
-                  <span class="v-status soon">Demnächst</span>
-                </div>
-                <div class="vmeta"><span class="vtag">Folge 04</span><h4>Kosmetik &amp; Konsum</h4><p>Volle Schubladen, halb leere Versprechen.</p></div>
-              </article>
-            </div>
-            <div class="vslide">
-              <article class="vcard">
-                <div class="vthumb t-cyan">
-                  <img class="v-mascot" src="assets/mascot-run-trim.png" alt="">
-                  <span class="v-status soon">Demnächst</span>
-                </div>
-                <div class="vmeta"><span class="vtag">Folge 05</span><h4>Ernährung &amp; Konsum</h4><p>Was landet wirklich auf dem Teller – und im Müll?</p></div>
-              </article>
-            </div>
+            <div class="vslide"><article class="vcard"><div class="vthumb t-cyan"><img class="v-mascot" src="assets/mascot-head-trim.png" alt=""><span class="v-status live">Jetzt verfügbar</span><span class="v-duration">4:12</span><div class="v-play" data-video="Klamotten &amp; Konsum"><span class="pcircle">▶</span></div></div><div class="vmeta"><span class="vtag">Folge 01</span><h4>Klamotten &amp; Konsum</h4><p>Warum der Kleiderschrank nie voll genug ist.</p></div></article></div>
+            <div class="vslide"><article class="vcard"><div class="vthumb t-mint"><img class="v-mascot" src="assets/mascot-standing-trim.png" alt=""><span class="v-status soon">Demnächst</span></div><div class="vmeta"><span class="vtag">Folge 02</span><h4>Bücher &amp; Konsum</h4><p>Gelesen oder nur gekauft? Der Stapel wächst.</p></div></article></div>
+            <div class="vslide"><article class="vcard"><div class="vthumb t-red"><img class="v-mascot" src="assets/mascot-run-cyan-trim.png" alt=""><span class="v-status soon">Demnächst</span></div><div class="vmeta"><span class="vtag">Folge 03</span><h4>Technologie &amp; Konsum</h4><p>Jedes Jahr ein neues Gerät – muss das sein?</p></div></article></div>
+            <div class="vslide"><article class="vcard"><div class="vthumb t-mint"><img class="v-mascot" src="assets/mascot-wave-trim.png" alt=""><span class="v-status soon">Demnächst</span></div><div class="vmeta"><span class="vtag">Folge 04</span><h4>Kosmetik &amp; Konsum</h4><p>Volle Schubladen, halb leere Versprechen.</p></div></article></div>
+            <div class="vslide"><article class="vcard"><div class="vthumb t-cyan"><img class="v-mascot" src="assets/mascot-run-trim.png" alt=""><span class="v-status soon">Demnächst</span></div><div class="vmeta"><span class="vtag">Folge 05</span><h4>Ernährung &amp; Konsum</h4><p>Was landet wirklich auf dem Teller – und im Müll?</p></div></article></div>
           </div>
         </div>
         <div class="vnav">
@@ -719,113 +157,14 @@
   </div>
 </section>
 
-<!-- ============ CHALLENGE ============ -->
-<section id="challenge" class="sec-pad" data-screen-label="Challenge">
-  <div class="wrap">
-    <span class="eyebrow reveal">#DreiTageWartenChallenge</span>
-    <h2 class="sec-head reveal">Die Warte-3-Tage-Challenge.</h2>
-    <div class="challenge-grid">
-      <div class="challenge-lead reveal">
-        <p>Bevor du etwas kaufst, warte 3 Tage. Ist der Wunsch danach weg? Dann hast du Geld gespart. Ist er noch da? Dann ist es eine bewusste Entscheidung – kein Impulskauf.</p>
-        <div class="hashtag-band">
-          <span class="ht-ico">📢</span>
-          <span>Mach mit und poste deine Erfahrung unter <strong>#DreiTageWartenChallenge</strong></span>
-        </div>
-        <div class="social-proof" style="margin-top:22px;">
-          <div class="sp-card"><div class="sp-name">@lisa_k</div>Handtasche für 89€ – 3 Tage gewartet, dann totales Desinteresse. Gespart!</div>
-          <div class="sp-card"><div class="sp-name">@michi_buys</div>Mir wurde klar, wie viel ich nur aus Langeweile kaufen will.</div>
-          <div class="sp-card"><div class="sp-name">@sarah_minimal</div>Nach 3 Tagen gab's das Produkt mit 20% Rabatt. Doppelter Win.</div>
-          <div class="sp-card"><div class="sp-name">@tom_budget</div>Läuft seit 2 Wochen – schon über 200€ gespart. Unglaublich.</div>
-        </div>
-      </div>
-      <div class="timer-card reveal">
-        <h3>Starte deinen Timer</h3>
-        <p class="tc-sub">72 Stunden Bedenkzeit. Dein Countdown läuft – auch nach dem Neuladen.</p>
-        <div class="timer-form">
-          <input class="field" type="text" id="timerItem" placeholder="Was möchtest du kaufen?" aria-label="Was möchtest du kaufen?">
-          <button class="btn btn-red" id="timerStart" style="justify-content:center;">⏳ 3-Tage-Timer starten</button>
-        </div>
-        <div class="timer-display" id="timerDisplay" aria-live="polite">
-          <div class="ti-name" id="timerName"></div>
-          <div class="timer-clock">
-            <div class="clock-unit"><div class="cu-num" id="cD">00</div><div class="cu-lab">Tage</div></div>
-            <div class="clock-unit"><div class="cu-num" id="cH">00</div><div class="cu-lab">Std</div></div>
-            <div class="clock-unit"><div class="cu-num" id="cM">00</div><div class="cu-lab">Min</div></div>
-            <div class="clock-unit"><div class="cu-num" id="cS">00</div><div class="cu-lab">Sek</div></div>
-          </div>
-          <div class="timer-done" id="timerDone">72 Stunden sind um! Willst du es immer noch? Dann war es kein Impulskauf. 💪</div>
-          <button class="btn btn-ghost btn-sm" id="timerReset" style="margin-top:18px;">Timer zurücksetzen</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ TIPPS ============ -->
-<section id="tipps" class="sec-pad" data-screen-label="Tipps">
-  <div class="wrap">
-    <span class="eyebrow reveal">Praktische Strategien</span>
-    <h2 class="sec-head reveal">9 Tipps für bewussteren Konsum.</h2>
-    <div class="accordion" id="accordion"></div>
-  </div>
-</section>
-
-<!-- ============ QUIZ ============ -->
-<section id="quiz" class="sec-pad band-red" data-screen-label="Quiz">
-  <div class="wrap">
-    <span class="eyebrow reveal">Selbsttest</span>
-    <h2 class="sec-head reveal">Wie trendanfällig bist du?</h2>
-    <div class="quiz-progress-wrap reveal">
-      <div class="progress-track"><div class="progress-fill" id="quizProgress"></div></div>
-      <span class="progress-label" id="quizProgressLabel">0 / 8</span>
-    </div>
-    <div class="quiz-card reveal" id="quizCard">
-      <div class="q-num" id="qNum">Frage 1 von 8</div>
-      <div class="q-text" id="qText">Lade Quiz…</div>
-      <div class="quiz-answers">
-        <button class="quiz-btn" data-pts="0">Nie</button>
-        <button class="quiz-btn" data-pts="1.5">Manchmal</button>
-        <button class="quiz-btn" data-pts="3">Oft</button>
-      </div>
-    </div>
-    <div class="quiz-result" id="quizResult">
-      <img class="result-emoji" id="resultEmoji" src="assets/mascot-standing-trim.png" alt="">
-      <div class="result-score" id="resultScore">0<small> / 24 P</small></div>
-      <div class="result-label" id="resultLabel"></div>
-      <p class="result-text" id="resultText"></p>
-      <div class="result-btns">
-        <a class="btn btn-cyan" href="#tipps" data-nav>Tipps ansehen <span class="arr">→</span></a>
-        <button class="btn btn-dark" id="shareResult">Ergebnis teilen 📣</button>
-        <button class="btn btn-outline" id="restartQuiz">Nochmal</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ RECHNER ============ -->
-<section id="rechner" class="sec-pad" data-screen-label="Rechner">
-  <div class="wrap">
-    <span class="eyebrow reveal">Der Realitäts-Check</span>
-    <h2 class="sec-head reveal">Was kostet dich das wirklich?</h2>
-    <p class="sec-lead reveal">Rechne einen Preis in Arbeitszeit um. Manchmal sieht ein Kauf dann ganz anders aus.</p>
-    <div class="rechner-card reveal">
-      <div class="r-field">
-        <label for="preis">Preis des Artikels (€)</label>
-        <div class="r-row"><input class="field" type="number" id="preis" placeholder="z. B. 120" min="0" step="0.01" inputmode="decimal"></div>
-      </div>
-      <div class="r-field">
-        <label for="lohn">Dein Stundenlohn (€/h)</label>
-        <div class="r-row">
-          <input class="field" type="number" id="lohn" placeholder="z. B. 14,00" min="0" step="0.01" inputmode="decimal">
-          <button class="btn btn-dark btn-sm" id="useMindestlohn" style="border-radius:12px;">Mindestlohn (12,82 €)</button>
-        </div>
-      </div>
-      <div class="r-empty" id="rechnerEmpty">Gib Preis und Stundenlohn ein, um dein Ergebnis zu sehen.</div>
-      <div class="rechner-result" id="rechnerResult">
-        <div class="r-hours" id="rHours"></div>
-        <div class="r-context" id="rContext"></div>
-        <div class="r-tagline">Ist es das wirklich wert?</div>
-      </div>
+<!-- ============ SPAR-COUNTER BAND ============ -->
+<section id="sparcounter" class="counter-band" data-screen-label="Spar-Counter">
+  <div class="wrap counter-inner">
+    <img class="counter-mascot" src="assets/mascot-run-cyan-trim.png" alt="">
+    <div>
+      <div class="counter-num"><span class="euro" id="sparCounter">0</span> €</div>
+      <div class="counter-label">hat diese Community zusammen bewusst <strong>nicht</strong> ausgegeben.</div>
+      <div class="counter-sub"><span class="live-dot"></span>Live mitgezählt</div>
     </div>
   </div>
 </section>
@@ -849,6 +188,7 @@
         <div class="char-count" id="charCount">0 / 300 Zeichen</div>
         <input class="field" type="text" id="expName" placeholder="Dein Name und Alter (optional)" aria-label="Name und Alter">
         <button class="btn btn-red" id="submitStory" style="justify-content:center;">Einreichen <span class="arr">→</span></button>
+        <p class="submit-note">Alle Einreichungen werden vor der Veröffentlichung geprüft. Bitte bleib respektvoll und beim Thema Konsum.</p>
       </div>
     </div>
   </div>
@@ -858,29 +198,15 @@
 <section id="hilfsangebote" class="sec-pad" data-screen-label="Hilfsangebote">
   <div class="wrap">
     <span class="eyebrow reveal">Du brauchst Unterstützung?</span>
-    <h2 class="sec-head reveal">Hilfsangebote.</h2>
+    <h2 class="sec-head sm reveal">Hilfsangebote.</h2>
     <div class="help-grid">
-      <div class="help-card reveal">
-        <h3>Schuldnerberatung Deutschland</h3>
-        <p>Kostenlose Beratung bei Schulden und finanziellen Engpässen.</p>
-        <a href="https://schuldnerberatung.de" target="_blank" rel="noopener">schuldnerberatung.de <span class="arr">→</span></a>
-      </div>
-      <div class="help-card reveal">
-        <h3>Verbraucherzentrale</h3>
-        <p>Unabhängige Beratung zu Finanzen, Konsum und Verbraucherrechten.</p>
-        <a href="https://verbraucherzentrale.de" target="_blank" rel="noopener">verbraucherzentrale.de <span class="arr">→</span></a>
-      </div>
-      <div class="help-card reveal">
-        <h3>Bundeszentrale für politische Bildung</h3>
-        <p>Materialien zu Finanzkompetenz und bewusstem Konsum.</p>
-        <a href="https://bpb.de" target="_blank" rel="noopener">bpb.de <span class="arr">→</span></a>
-      </div>
-      <div class="help-card reveal">
-        <h3>Caritas Schuldnerberatung</h3>
-        <p>Hilfe und Beratung für Menschen in finanziellen Notlagen.</p>
-        <a href="https://caritas.de" target="_blank" rel="noopener">caritas.de <span class="arr">→</span></a>
-      </div>
+      <div class="help-card reveal"><h3>Schuldnerberatung Deutschland</h3><p>Kostenlose Beratung bei Schulden und finanziellen Engpässen.</p><a href="https://schuldnerberatung.de" target="_blank" rel="noopener">schuldnerberatung.de <span class="arr">→</span></a></div>
+      <div class="help-card reveal"><h3>Verbraucherzentrale</h3><p>Unabhängige Beratung zu Finanzen, Konsum und Verbraucherrechten.</p><a href="https://verbraucherzentrale.de" target="_blank" rel="noopener">verbraucherzentrale.de <span class="arr">→</span></a></div>
+      <div class="help-card reveal"><h3>Bundeszentrale für politische Bildung</h3><p>Materialien zu Finanzkompetenz und bewusstem Konsum.</p><a href="https://bpb.de" target="_blank" rel="noopener">bpb.de <span class="arr">→</span></a></div>
+      <div class="help-card reveal"><h3>Caritas Schuldnerberatung</h3><p>Hilfe und Beratung für Menschen in finanziellen Notlagen.</p><a href="https://caritas.de" target="_blank" rel="noopener">caritas.de <span class="arr">→</span></a></div>
     </div>
+    <h3 class="faq-head reveal">Häufige Fragen</h3>
+    <div class="accordion" id="faq"></div>
   </div>
 </section>
 
@@ -888,379 +214,28 @@
 <footer data-screen-label="Footer">
   <div class="footer-logo">STOP. BEFORE YOU SHOP.</div>
   <div class="footer-tag">Trends vergehen. Schulden bleiben.</div>
-  <img class="footer-mascot" src="assets/mascot-wave-trim.png" alt="Winkendes Maskottchen">
+  <img class="footer-mascot" src="assets/mascot-run-cyan-trim.png" alt="Rennendes Maskottchen">
   <div class="footer-bar">© 2024 Stop. Before You Shop. · Bildungsprojekt · Alle Rechte vorbehalten</div>
 </footer>
 
+<!-- ============ MASCOT BUDDY ============ -->
+<div class="buddy" id="buddy" aria-live="polite">
+  <img class="buddy-mascot" src="assets/mascot-head-trim.png" alt="">
+  <div class="buddy-bubble" id="buddyBubble">
+    <button class="buddy-close" id="buddyClose" aria-label="Maskottchen ausblenden">✕</button>
+    <span id="buddyText">Psst…</span>
+  </div>
+</div>
 <button id="scroll-top" aria-label="Nach oben scrollen">↑</button>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  'use strict';
-  var $ = function (s, r) { return (r || document).querySelector(s); };
-  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-
-  // === SECTION: global helpers ===
-  var toastEl = $('#toast'), toastTimer;
-  function showToast(msg) {
-    toastEl.textContent = msg;
-    toastEl.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 3000);
-  }
-  function smoothScrollTo(target) {
-    var el = typeof target === 'string' ? $(target) : target;
-    if (!el) return;
-    var navH = $('.site-nav').offsetHeight;
-    var y = el.getBoundingClientRect().top + window.pageYOffset - navH - 14;
-    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-  }
-
-  // === SECTION: navigation ===
-  var menuPanel = $('#menuPanel'), menuOverlay = $('#menuOverlay'), hamburger = $('#hamburgerBtn');
-  function openMenu() {
-    menuPanel.classList.add('open');
-    menuOverlay.classList.add('open');
-    hamburger.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeMenu() {
-    menuPanel.classList.remove('open');
-    menuOverlay.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
-  hamburger.addEventListener('click', openMenu);
-  $('#menuClose').addEventListener('click', closeMenu);
-  menuOverlay.addEventListener('click', closeMenu);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
-
-  // Smooth-scroll for every in-page anchor + closes menu
-  $$('[data-nav]').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      var href = a.getAttribute('href');
-      if (href && href.charAt(0) === '#') {
-        e.preventDefault();
-        closeMenu();
-        smoothScrollTo(href);
-      }
-    });
-  });
-  // Action cards + any [data-scroll]
-  $$('[data-scroll]').forEach(function (el) {
-    el.addEventListener('click', function () { smoothScrollTo(el.getAttribute('data-scroll')); });
-  });
-  $('#searchBtn').addEventListener('click', function () { showToast('Suche kommt bald 🔍'); });
-
-  // === SECTION: stories (erfahrungen) + hero teaser ===
-  var STORIES_KEY = 'sbys_stories';
-  var baseStories = [
-    { text: "Ich habe diesen Monat fast 300€ für Klamotten ausgegeben, weil ich dachte, dass meine Sachen vom letzten Jahr mir nicht mehr gefallen. Letztendlich habe ich fast nichts davon getragen. Von dem Geld hätte ich einen ganzen Monat einkaufen gehen können.", author: "Marie, 24" },
-    { text: "Ich habe mir Sneaker für 120€ gekauft, weil sie auf TikTok viral gegangen sind. Nach zwei Wochen hat sie keiner mehr getragen – auch ich nicht. Die stehen seitdem unberührt im Regal.", author: "Lena, 19" },
-    { text: "Ich wollte eine Handyhülle kaufen. Drei Tage später hatte ich sie komplett vergessen. Das Geld habe ich dann lieber für ein Konzert ausgegeben – viel besser.", author: "Jonas, 22" },
-    { text: "Ich habe dieses Jahr bestimmt 200€ für Dinge ausgegeben, die ich auf Instagram gesehen habe. Die meisten benutze ich kaum. Das Geld hätte ich besser gespart.", author: "Sophie, 17" },
-    { text: "Ich habe gewartet, bevor ich mir eine teure Jacke gekauft habe. Nach drei Tagen wollte ich sie immer noch – und heute ist sie mein liebstes Kleidungsstück.", author: "Tim, 20" }
-  ];
-  var extraStories = [];
-  try { extraStories = JSON.parse(sessionStorage.getItem(STORIES_KEY) || '[]'); } catch (e) { extraStories = []; }
-  var stories = baseStories.concat(extraStories);
-  var curStory = 0, storyTimer;
-
-  var storiesTrack = $('#storiesTrack'), storiesDots = $('#storiesDots'), teaserQuote = $('#teaserQuote');
-
-  function renderStories() {
-    storiesTrack.innerHTML = stories.map(function (s) {
-      return '<div class="story-card"><p class="sc-quote">\u201C' + escapeHtml(s.text) + '\u201D<span class="sc-author">\u2014 ' + escapeHtml(s.author) + '</span></p></div>';
-    }).join('');
-    storiesDots.innerHTML = stories.map(function (_, i) {
-      return '<button class="s-dot' + (i === curStory ? ' active' : '') + '" data-story="' + i + '" aria-label="Geschichte ' + (i + 1) + '"></button>';
-    }).join('');
-    $$('.s-dot', storiesDots).forEach(function (d) {
-      d.addEventListener('click', function () { goStory(parseInt(d.getAttribute('data-story'), 10)); });
-    });
-    updateStoryPos();
-  }
-  function updateStoryPos() {
-    storiesTrack.style.transform = 'translateX(-' + (curStory * 100) + '%)';
-    $$('.s-dot', storiesDots).forEach(function (d, i) { d.classList.toggle('active', i === curStory); });
-    updateTeaser();
-  }
-  function updateTeaser() {
-    var s = stories[curStory];
-    teaserQuote.style.opacity = '0';
-    setTimeout(function () {
-      var t = s.text.length > 116 ? s.text.substring(0, 116).trim() + '…' : s.text;
-      teaserQuote.innerHTML = '<span class="tq-text">\u201C' + escapeHtml(t) + '\u201D</span><span class="tq-author">\u2014 ' + escapeHtml(s.author) + '</span>';
-      teaserQuote.style.opacity = '1';
-    }, 200);
-  }
-  function goStory(i) {
-    curStory = (i + stories.length) % stories.length;
-    updateStoryPos();
-    resetStoryTimer();
-  }
-  function resetStoryTimer() {
-    clearInterval(storyTimer);
-    storyTimer = setInterval(function () { goStory(curStory + 1); }, 5000);
-  }
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-    });
-  }
-  $('#storyPrev').addEventListener('click', function () { goStory(curStory - 1); });
-  $('#storyNext').addEventListener('click', function () { goStory(curStory + 1); });
-  renderStories();
-  resetStoryTimer();
-
-  // Submit story
-  var expText = $('#expText'), expName = $('#expName'), charCount = $('#charCount');
-  expText.addEventListener('input', function () {
-    var n = expText.value.length;
-    charCount.textContent = n + ' / 300 Zeichen';
-    charCount.classList.toggle('warn', n >= 280);
-  });
-  $('#submitStory').addEventListener('click', function () {
-    var text = expText.value.trim();
-    var name = expName.value.trim() || 'Anonym';
-    if (!text) { showToast('Bitte schreibe deine Erfahrung!'); expText.focus(); return; }
-    var story = { text: text, author: name };
-    extraStories.push(story);
-    try { sessionStorage.setItem(STORIES_KEY, JSON.stringify(extraStories)); } catch (e) {}
-    stories.push(story);
-    expText.value = ''; expName.value = '';
-    charCount.textContent = '0 / 300 Zeichen';
-    charCount.classList.remove('warn');
-    renderStories();
-    goStory(stories.length - 1);
-    showToast('Danke! Deine Erfahrung ist jetzt dabei. 🎉');
-  });
-
-  // === SECTION: video slider ===
-  var vtrack = $('#vtrack'), vidPrev = $('#vidPrev'), vidNext = $('#vidNext');
-  var vTotal = vtrack.children.length, vIdx = 0;
-  function visibleVids() { return window.innerWidth <= 760 ? 1 : 2; }
-  function maxVidIdx() { return Math.max(0, vTotal - visibleVids()); }
-  function updateVideo() {
-    if (vIdx > maxVidIdx()) vIdx = maxVidIdx();
-    var slide = vtrack.children[0];
-    var gap = 22;
-    var step = slide.getBoundingClientRect().width + gap;
-    vtrack.style.transform = 'translateX(-' + (vIdx * step) + 'px)';
-    vidPrev.disabled = vIdx <= 0;
-    vidNext.disabled = vIdx >= maxVidIdx();
-  }
-  vidPrev.addEventListener('click', function () { vIdx = Math.max(0, vIdx - 1); updateVideo(); });
-  vidNext.addEventListener('click', function () { vIdx = Math.min(maxVidIdx(), vIdx + 1); updateVideo(); });
-  $$('.v-play').forEach(function (p) {
-    p.addEventListener('click', function () { showToast('▶ „' + p.getAttribute('data-video') + '“ – Video startet bald!'); });
-  });
-  updateVideo();
-
-  // === SECTION: challenge timer ===
-  var TIMER_KEY = 'sbys_timer';
-  var timerInterval;
-  var timerDisplay = $('#timerDisplay'), timerName = $('#timerName'), timerDone = $('#timerDone');
-  var cD = $('#cD'), cH = $('#cH'), cM = $('#cM'), cS = $('#cS');
-  function pad(n) { return String(n).padStart(2, '0'); }
-  function runTimer(endTime, item) {
-    timerDisplay.classList.add('active');
-    timerName.textContent = 'Artikel: „' + item + '“';
-    timerDone.style.display = 'none';
-    clearInterval(timerInterval);
-    function tick() {
-      var rem = endTime - Date.now();
-      if (rem <= 0) {
-        clearInterval(timerInterval);
-        cD.textContent = cH.textContent = cM.textContent = cS.textContent = '00';
-        timerDone.style.display = 'block';
-        return;
-      }
-      cD.textContent = pad(Math.floor(rem / 86400000));
-      cH.textContent = pad(Math.floor((rem % 86400000) / 3600000));
-      cM.textContent = pad(Math.floor((rem % 3600000) / 60000));
-      cS.textContent = pad(Math.floor((rem % 60000) / 1000));
-    }
-    tick();
-    timerInterval = setInterval(tick, 1000);
-  }
-  $('#timerStart').addEventListener('click', function () {
-    var item = $('#timerItem').value.trim();
-    if (!item) { showToast('Bitte gib ein, was du kaufen möchtest!'); $('#timerItem').focus(); return; }
-    var endTime = Date.now() + 72 * 3600000;
-    try { sessionStorage.setItem(TIMER_KEY, JSON.stringify({ end: endTime, item: item })); } catch (e) {}
-    runTimer(endTime, item);
-  });
-  $('#timerReset').addEventListener('click', function () {
-    clearInterval(timerInterval);
-    sessionStorage.removeItem(TIMER_KEY);
-    timerDisplay.classList.remove('active');
-    $('#timerItem').value = '';
-  });
-  (function restoreTimer() {
-    try {
-      var saved = JSON.parse(sessionStorage.getItem(TIMER_KEY) || 'null');
-      if (saved && saved.end && saved.item) {
-        $('#timerItem').value = saved.item;
-        runTimer(saved.end, saved.item);
-      }
-    } catch (e) {}
-  })();
-
-  // === SECTION: tipps accordion ===
-  var tips = [
-    { title: "Abwarten", body: "Meistens verlieren Dinge nach ein paar Tagen ihren Reiz. Lege dir eine Sperrfrist auf – z. B. alles über 30€ → 30 Tage warten." },
-    { title: "Keine Spontankäufe", body: "Schreibe einen Einkaufszettel und halte dich strikt daran. Setze auf Qualität statt Quantität." },
-    { title: "Werbung bewusst analysieren", body: "Welche Bedürfnisse werden angesprochen? Bringt mir das Produkt wirklich den erhofften Nutzen? Konsum ist oft nur eine Kombination aus schönen Bildern, Sprache und Musik." },
-    { title: "Nicht jeden Trend mitmachen", body: "Trends sind temporär. Dein Geld ist real." },
-    { title: "Ersatzbefriedigung finden", body: "Konsumlust umlenken: alten Pulli neu stylen, die Kommode neu anstreichen, die Wohnung umstellen, eine neue Frisur ausprobieren." },
-    { title: "Leihen statt kaufen", body: "Muss es wirklich gekauft werden? Skiausrüstung im Winter, Camper im Sommer – frag dich, ob Leihen die bessere Option ist." },
-    { title: "Was steckt wirklich dahinter?", body: "Wir versuchen oft, eine tiefere Unzufriedenheit mit einem neuen Gegenstand zu überdecken. Lohnt es sich, den echten Grund zu hinterfragen, bevor du wieder kurz davor bist, etwas zu kaufen?" },
-    { title: "Offline kaufen, wenn sinnvoll", body: "Schuhe, Kleidung etc. lieber vor Ort anprobieren – so vermeidest du Fehlkäufe, Versandkosten und das „Ich schick's eh nicht zurück\"-Problem." },
-    { title: "Brauchst du es wirklich?", body: "Vor dem Kauf fragen: Welche Ressourcen stecken im Produkt? Was kostet es dich auch als Besitzer noch – Lagerung, Pflege, Platz?" }
-  ];
-  var accordion = $('#accordion');
-  accordion.innerHTML = tips.map(function (t, i) {
-    return '<div class="acc-item" data-acc="' + i + '">' +
-      '<button class="acc-head" aria-expanded="false" aria-controls="accBody' + i + '">' +
-      '<span class="acc-num">' + pad(i + 1) + '</span>' +
-      '<span class="acc-title">' + t.title + '</span>' +
-      '<span class="acc-icon">+</span></button>' +
-      '<div class="acc-body" id="accBody' + i + '"><div class="acc-body-inner">' + t.body + '</div></div></div>';
-  }).join('');
-  $$('.acc-head', accordion).forEach(function (head) {
-    head.addEventListener('click', function () {
-      var item = head.parentElement;
-      var isOpen = item.classList.contains('open');
-      $$('.acc-item.open', accordion).forEach(function (op) {
-        op.classList.remove('open');
-        op.querySelector('.acc-head').setAttribute('aria-expanded', 'false');
-        op.querySelector('.acc-body').style.maxHeight = null;
-      });
-      if (!isOpen) {
-        item.classList.add('open');
-        head.setAttribute('aria-expanded', 'true');
-        var body = item.querySelector('.acc-body');
-        body.style.maxHeight = body.scrollHeight + 'px';
-      }
-    });
-  });
-
-  // === SECTION: quiz ===
-  var questions = [
-    "Ich kaufe Dinge, die ich auf Social Media gesehen habe.",
-    "Ich bereue Käufe kurz danach.",
-    "Ich kaufe, weil Freunde es auch haben.",
-    "Ich kaufe impulsiv, ohne vorher nachzudenken.",
-    "Ich kaufe Dinge, die ich danach nie benutze.",
-    "Werbung beeinflusst meine Kaufentscheidungen stark.",
-    "Ich gebe mehr aus, als ich eigentlich wollte.",
-    "Ich kaufe etwas, obwohl ich es eigentlich nicht brauche."
-  ];
-  var results = [
-    { max: 4, label: "Sehr bewusst – Respekt! 💪", text: "Du triffst Kaufentscheidungen extrem überlegt. Trends ziehen an dir vorbei, ohne Spuren auf deinem Konto zu hinterlassen.", emoji: "assets/mascot-standing-trim.png" },
-    { max: 9, label: "Bewusst unterwegs", text: "Du hast ein gesundes Verhältnis zu Konsum. Ein paar kleine Reflexe helfen dir, ganz souverän zu bleiben.", emoji: "assets/mascot-head-trim.png" },
-    { max: 15, label: "Im Mittelfeld", text: "Mal überlegt, mal spontan. Unsere Tipps zeigen dir, wie du häufiger bewusst entscheidest.", emoji: "assets/mascot-wave-trim.png" },
-    { max: 20, label: "Eher trendanfällig", text: "Impulskäufe spielen eine spürbare Rolle bei dir. Mit ein paar Strategien lässt sich das aber gut in den Griff bekommen.", emoji: "assets/mascot-selfie-trim.png" },
-    { max: 24, label: "Stark trendanfällig", text: "Trends bestimmen deinen Konsum stark. Keine Sorge – die Warte-3-Tage-Challenge und unsere Tipps sind genau für dich gemacht.", emoji: "assets/mascot-run-trim.png" }
-  ];
-  var qIdx = 0, score = 0;
-  var quizCard = $('#quizCard'), quizResult = $('#quizResult');
-  var quizProgress = $('#quizProgress'), quizProgressLabel = $('#quizProgressLabel');
-  function renderQuestion() {
-    quizCard.style.display = 'block';
-    quizResult.classList.remove('active');
-    $('#qNum').textContent = 'Frage ' + (qIdx + 1) + ' von ' + questions.length;
-    $('#qText').textContent = questions[qIdx];
-    quizProgress.style.width = (qIdx / questions.length * 100) + '%';
-    quizProgressLabel.textContent = qIdx + ' / ' + questions.length;
-  }
-  $$('.quiz-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      score += parseFloat(btn.getAttribute('data-pts'));
-      qIdx++;
-      if (qIdx < questions.length) renderQuestion();
-      else showResult();
-    });
-  });
-  function showResult() {
-    quizCard.style.display = 'none';
-    quizProgress.style.width = '100%';
-    quizProgressLabel.textContent = questions.length + ' / ' + questions.length;
-    var r = results.find(function (x) { return score <= x.max; }) || results[results.length - 1];
-    $('#resultScore').innerHTML = (Math.round(score * 10) / 10) + '<small> / 24 P</small>';
-    $('#resultLabel').textContent = r.label;
-    $('#resultText').textContent = r.text;
-    $('#resultEmoji').src = r.emoji;
-    quizResult.classList.add('active');
-  }
-  $('#restartQuiz').addEventListener('click', function () {
-    qIdx = 0; score = 0; renderQuestion();
-  });
-  $('#shareResult').addEventListener('click', function () {
-    var label = $('#resultLabel').textContent;
-    var text = 'Mein Ergebnis im Trendanfälligkeits-Check: „' + label + '“ – teste dich selbst auf Stop. Before You Shop. #DreiTageWartenChallenge';
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { showToast('Ergebnis kopiert! 📋'); })
-        .catch(function () { showToast('Kopieren nicht möglich.'); });
-    } else { showToast('Kopieren nicht möglich.'); }
-  });
-  renderQuestion();
-
-  // === SECTION: rechner ===
-  var preis = $('#preis'), lohn = $('#lohn');
-  var rechnerResult = $('#rechnerResult'), rechnerEmpty = $('#rechnerEmpty');
-  function calcRechner() {
-    var p = parseFloat(preis.value), l = parseFloat(lohn.value);
-    if (!p || !l || p <= 0 || l <= 0) {
-      rechnerResult.classList.remove('active');
-      rechnerEmpty.style.display = 'block';
-      return;
-    }
-    rechnerEmpty.style.display = 'none';
-    var hours = p / l;
-    var h = Math.floor(hours), m = Math.round((hours - h) * 60);
-    if (m === 60) { h++; m = 0; }
-    var str;
-    if (h === 0) str = m + ' Minuten';
-    else if (m === 0) str = h + (h === 1 ? ' Stunde' : ' Stunden');
-    else str = h + (h === 1 ? ' Stunde' : ' Stunden') + ' und ' + m + ' Minuten';
-    $('#rHours').textContent = 'Du arbeitest ' + str + ' dafür.';
-    var workdays = hours / 8, context;
-    if (workdays < 0.25) context = 'Das sind nur ein paar Minuten Arbeit.';
-    else if (workdays < 0.5) context = 'Das ist fast ein Viertel eines Arbeitstages.';
-    else if (workdays < 1) context = 'Das ist fast ein halber Arbeitstag.';
-    else if (workdays < 2) context = 'Das ist etwa ' + (Math.round(workdays * 10) / 10) + ' Arbeitstage.';
-    else context = 'Das sind mehr als ' + Math.floor(workdays) + ' volle Arbeitstage.';
-    $('#rContext').textContent = context;
-    rechnerResult.classList.add('active');
-  }
-  preis.addEventListener('input', calcRechner);
-  lohn.addEventListener('input', calcRechner);
-  $('#useMindestlohn').addEventListener('click', function () { lohn.value = '12.82'; calcRechner(); lohn.focus(); });
-
-  // === SECTION: scroll-to-top + reveal on scroll ===
-  var scrollTop = $('#scroll-top');
-  window.addEventListener('scroll', function () {
-    scrollTop.classList.toggle('show', window.pageYOffset > 300);
-  }, { passive: true });
-  scrollTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
-
-  var revealObserver = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('in'); revealObserver.unobserve(e.target); }
-    });
-  }, { threshold: 0.12 });
-  $$('.reveal').forEach(function (el) { revealObserver.observe(el); });
-
-  // Keep sliders correct on resize
-  var rT;
-  window.addEventListener('resize', function () {
-    clearTimeout(rT);
-    rT = setTimeout(function () { updateVideo(); updateStoryPos(); }, 150);
-  });
-});
-</script>
+<!-- ============ TWEAKS PANEL (React island) ============ -->
+<div id="tweaks-root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="sbys-tweaks.jsx"></script>
+<script src="script.js"></script>
 </body>
 </html>

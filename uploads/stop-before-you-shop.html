@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stop Before You Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cyan: #00C8C8;
+    --cyan-light: #b2f0f0;
+    --cyan-card: #c8f5f5;
+    --red: #E8173A;
+    --dark: #1A1A1A;
+    --white: #ffffff;
+    --radius: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cyan);
+    color: var(--dark);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .anton { font-family: 'Anton', sans-serif; letter-spacing: 0.02em; }
+
+  /* ===== MASCOT SVG ===== */
+  .mascot {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+  }
+  .mascot svg { width: 100%; height: 100%; }
+
+  /* ===== NAV ===== */
+  nav {
+    background: var(--cyan);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-text {
+    font-family: 'Anton', sans-serif;
+    color: var(--red);
+    font-size: 1.2rem;
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-center {
+    display: flex;
+    gap: 8px;
+    font-family: 'Anton', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+  }
+  .nav-center a {
+    color: var(--dark);
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: background 0.2s;
+  }
+  .nav-center a:hover { background: rgba(0,0,0,0.08); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .nav-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: var(--dark);
+    padding: 4px;
+    border-radius: 6px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+  }
+  .nav-icon-btn:hover { background: rgba(0,0,0,0.08); }
+
+  .nav-mobile-links {
+    display: none;
+    gap: 6px;
+    padding: 8px 24px;
+    background: var(--cyan);
+    border-top: 1px solid rgba(0,0,0,0.07);
+  }
+  .nav-mobile-links a {
+    font-family: 'Anton', sans-serif;
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.3);
+  }
+
+  /* ===== HAMBURGER MENU ===== */
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .menu-overlay.open { opacity: 1; pointer-events: all; }
+
+  .menu-panel {
+    position: fixed;
+    top: 0;
+    right: -340px;
+    width: 320px;
+    max-width: 90vw;
+    height: 100%;
+    background: var(--red);
+    z-index: 201;
+    padding: 28px 32px;
+    transition: right 0.35s cubic-bezier(.4,0,.2,1);
+    display: flex;
+    flex-direction: column;
+  }
+  .menu-panel.open { right: 0; }
+
+  .menu-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-bottom: 24px;
+    line-height: 1;
+  }
+
+  .menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .menu-items a {
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem;
+    color: var(--cyan-light);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    transition: color 0.2s;
+  }
+  .menu-items a:hover { color: white; }
+
+  /* ===== SECTION BASE ===== */
+  section {
+    padding: 64px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-heading {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    text-transform: uppercase;
+    color: var(--dark);
+    margin-bottom: 24px;
+  }
+
+  /* ===== CARD ===== */
+  .card {
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 24px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+
+  .card-red {
+    background: var(--red);
+    color: white;
+  }
+
+  /* ===== HERO ===== */
+  #hero {
+    padding-top: 48px;
+    padding-bottom: 32px;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .hero-headline {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    text-transform: uppercase;
+    color: var(--dark);
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+
+  .hero-subheadline {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 20px;
+  }
+
+  .hero-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--dark);
+    margin-bottom: 24px;
+  }
+
+  .experience-card {
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .experience-card h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.2rem;
+    color: var(--dark);
+    margin-bottom: 12px;
+  }
+  .experience-card-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #444;
+    min-height: 80px;
+    transition: opacity 0.4s;
+  }
+  .experience-card-text em {
+    display: block;
+    font-weight: 600;
+    margin-top: 6px;
+    font-style: normal;
+    color: var(--red);
+  }
+  .exp-arrow-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 18px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .exp-arrow-btn:hover { opacity: 0.88; }
+
+  /* Tiles */
+  .hero-tiles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .hero-tile {
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    text-align: left;
+    font-family: 'Anton', sans-serif;
+    font-size: 1rem;
+    color: var(--dark);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .hero-tile:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+
+  .hero-brand-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .brand-card {
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .brand-card .brand-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .brand-card .brand-sub {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.85;
+  }
+  .brand-cyan { background: var(--cyan-card); color: var(--dark); }
+  .brand-red { background: var(--red); color: white; }
+  .brand-red .brand-title { color: var(--cyan-light); }
+  .brand-red .brand-sub { color: var(--cyan-light); }
+
+  /* ===== VIDEO SLIDER ===== */
+  .video-slider-wrap {
+    position: relative;
+    margin-top: 0;
+    padding: 16px 0 8px;
+  }
+  .video-slider-track-outer {
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+  .video-slider-track {
+    display: flex;
+    gap: 16px;
+    transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+  }
+  .video-slide {
+    flex: 0 0 calc(50% - 8px);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--cyan-card);
+    position: relative;
+  }
+  .video-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--cyan);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .video-thumb video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.18);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .play-overlay:hover { background: rgba(0,0,0,0.3); }
+  .play-btn-circle {
+    width: 56px;
+    height: 56px;
+    background: var(--red);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.4rem;
+  }
+  .video-label {
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .badge-demnachst {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--red);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+  }
+  .slider-arrow:hover { opacity: 0.85; }
+  .slider-arrow.left { left: -20px; }
+  .slider-arrow.right { right: -20px; }
+
+  /* ===== SECTION 2 — CHALLENGE ===== */
+  #challenge { background: none; }
+
+  .challenge-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .challenge-card {
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+
+  .timer-input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .timer-input-row input {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 2px solid var(--cyan);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .timer-input-row input:focus { border-color: var(--red); }
+
+  .btn-red {
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 22px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-red:hover { opacity: 0.88; transform: translateY(-2px); }
+
+  .timer-display {
+    display: none;
+    margin-top: 20px;
+    background: var(--red);
+    color: white;
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+  .timer-display.active { display: block; }
+  .timer-display .timer-item-name {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin-bottom: 6px;
+  }
+  .timer-digits {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.4rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+  .timer-labels {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    font-size: 0.75rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .timer-done-msg {
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-top: 8px;
+  }
+
+  .hashtag-cta {
+    background: var(--red);
+    color: white;
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .social-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .social-card {
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 16px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .social-card .sc-name {
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 6px;
+    font-size: 0.82rem;
+  }
+
+  /* ===== SECTION 3 — TIPPS ===== */
+  #tipps .accordion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .accordion-item {
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .accordion-header {
+    width: 100%;
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    cursor: pointer;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    color: var(--red);
+    letter-spacing: 0.03em;
+    text-align: left;
+    transition: background 0.2s;
+  }
+  .accordion-header:hover { background: rgba(0,0,0,0.04); }
+  .accordion-header .acc-num {
+    font-size: 0.8rem;
+    color: var(--dark);
+    opacity: 0.4;
+    margin-right: 10px;
+  }
+  .accordion-header .acc-title { flex: 1; }
+  .accordion-icon {
+    font-size: 1.2rem;
+    color: var(--dark);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .accordion-item.open .accordion-icon { transform: rotate(45deg); }
+
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s;
+    padding: 0 22px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #333;
+  }
+  .accordion-item.open .accordion-body {
+    max-height: 200px;
+    padding: 0 22px 18px;
+  }
+
+  /* ===== SECTION 4 — QUIZ ===== */
+  #quiz .quiz-wrap {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .progress-bar-outer {
+    background: rgba(0,0,0,0.1);
+    border-radius: 8px;
+    height: 8px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: var(--red);
+    border-radius: 8px;
+    transition: width 0.4s;
+  }
+
+  .quiz-card {
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    text-align: center;
+  }
+  .quiz-card .q-count {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+  .quiz-card .q-text {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+    color: var(--dark);
+    margin-bottom: 28px;
+    line-height: 1.2;
+  }
+  .quiz-answers {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .quiz-btn {
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 26px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    min-width: 100px;
+  }
+  .quiz-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+
+  .quiz-result {
+    display: none;
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 36px 28px;
+    text-align: center;
+  }
+  .quiz-result.active { display: block; }
+  .quiz-result .result-score {
+    font-family: 'Anton', sans-serif;
+    font-size: 4rem;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .quiz-result .result-label {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.6rem;
+    color: var(--dark);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .result-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+  .btn-outline {
+    background: white;
+    color: var(--red);
+    border: 2px solid var(--red);
+    border-radius: 10px;
+    padding: 11px 20px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+  }
+  .btn-outline:hover { background: var(--red); color: white; }
+
+  /* ===== SECTION 5 — RECHNER ===== */
+  #rechner .rechner-wrap {
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .rechner-card {
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 32px;
+  }
+
+  .rechner-field {
+    margin-bottom: 20px;
+  }
+  .rechner-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+  .rechner-input-row {
+    display: flex;
+    gap: 10px;
+  }
+  .rechner-input-row input {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 2px solid var(--cyan);
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .rechner-input-row input:focus { border-color: var(--red); }
+  .btn-mini {
+    background: var(--dark);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-mini:hover { opacity: 0.8; }
+
+  .rechner-result {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 2px solid rgba(0,0,0,0.08);
+    display: none;
+    text-align: center;
+  }
+  .rechner-result.active { display: block; }
+  .rechner-clock { font-size: 3rem; margin-bottom: 8px; }
+  .rechner-hours {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.2rem;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .rechner-context {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .rechner-wert {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.4rem;
+    color: var(--dark);
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  /* ===== SECTION 6 — ERFAHRUNGEN ===== */
+  #erfahrungen { }
+
+  .stories-slider-outer {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+  }
+  .stories-slider-inner {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+  }
+  .story-card {
+    flex: 0 0 100%;
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--dark);
+  }
+  .story-card .story-author {
+    display: block;
+    margin-top: 14px;
+    font-weight: 700;
+    color: var(--red);
+  }
+  .stories-nav {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  .story-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.2);
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .story-dot.active { background: var(--red); }
+
+  .submit-form {
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 28px;
+  }
+  .submit-form h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    color: var(--dark);
+    margin-bottom: 16px;
+  }
+  .submit-form textarea, .submit-form input[type="text"] {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 2px solid var(--cyan);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+  .submit-form textarea:focus, .submit-form input[type="text"]:focus { border-color: var(--red); }
+  .char-count { font-size: 0.8rem; color: #666; margin-top: -8px; margin-bottom: 12px; }
+
+  /* ===== SECTION 7 — HILFSANGEBOTE ===== */
+  #hilfsangebote .help-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .help-card {
+    background: var(--cyan-card);
+    border-radius: var(--radius);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .help-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .help-card h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.1rem;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .help-card p {
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .help-link {
+    display: inline-block;
+    background: var(--red);
+    color: white;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+  .help-link:hover { opacity: 0.85; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--red);
+    padding: 48px 24px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  footer .footer-logo {
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem;
+    color: white;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  footer .footer-tag {
+    font-size: 0.9rem;
+    color: var(--cyan-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 40px;
+  }
+  footer .footer-mascot {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* ===== SCROLL TO TOP ===== */
+  #scroll-top {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.2s;
+    z-index: 99;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  #scroll-top.visible { opacity: 1; pointer-events: all; }
+  #scroll-top:hover { transform: scale(1.1); }
+
+  /* ===== FADE IN ===== */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    right: 32px;
+    background: var(--dark);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+    z-index: 200;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .nav-center { display: none; }
+    .nav-mobile-links { display: flex; }
+
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-tiles-grid { grid-template-columns: 1fr 1fr; }
+    .hero-brand-row { grid-template-columns: 1fr 1fr; }
+
+    .video-slide { flex: 0 0 calc(100% - 0px); }
+
+    .challenge-grid { grid-template-columns: 1fr; }
+    .social-cards-grid { grid-template-columns: 1fr; }
+
+    #hilfsangebote .help-grid { grid-template-columns: 1fr; }
+
+    .slider-arrow.left { left: 4px; }
+    .slider-arrow.right { right: 4px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-tiles-grid { grid-template-columns: 1fr; }
+    .hero-brand-row { grid-template-columns: 1fr; }
+    .quiz-answers { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hamburger Overlay -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()" aria-hidden="true"></div>
+<div class="menu-panel" id="menuPanel" role="dialog" aria-label="Navigation">
+  <button class="menu-close" onclick="closeMenu()" aria-label="Menü schließen">✕</button>
+  <nav class="menu-items">
+    <a href="#challenge" onclick="closeMenu()">Challenge</a>
+    <a href="#tipps" onclick="closeMenu()">Tipps</a>
+    <a href="#quiz" onclick="closeMenu()">Quiz</a>
+    <a href="#rechner" onclick="closeMenu()">Rechner</a>
+    <a href="#erfahrungen" onclick="closeMenu()">Erfahrungen</a>
+    <a href="#hilfsangebote" onclick="closeMenu()">Hilfsangebote</a>
+  </nav>
+</div>
+
+<!-- NAV -->
+<nav role="navigation">
+  <a class="nav-logo" href="#" aria-label="Stop Before You Shop – Startseite">
+    <span class="mascot">
+      <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="34" rx="22" ry="22" fill="#E8173A"/>
+        <circle cx="30" cy="18" r="14" fill="#E8173A"/>
+        <circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/>
+        <circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/>
+        <path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <span class="nav-logo-text">STOP.<br>BEFORE YOU SHOP.</span>
+  </a>
+  <div class="nav-center" role="navigation" aria-label="Hauptnavigation">
+    <a href="#tipps">Tipps</a>
+    <a href="#hilfsangebote">Hilfsangebote</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-icon-btn" aria-label="Suche">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    <button class="nav-icon-btn" onclick="openMenu()" aria-label="Menü öffnen" aria-expanded="false" id="hamburgerBtn">☰</button>
+  </div>
+</nav>
+<div class="nav-mobile-links" role="navigation" aria-label="Mobile Navigation">
+  <a href="#tipps">Tipps</a>
+  <a href="#hilfsangebote">Hilfsangebote</a>
+</div>
+
+<!-- SECTION 1 — HERO -->
+<section id="hero">
+  <div class="hero-grid">
+    <!-- LEFT -->
+    <div class="fade-in">
+      <h1 class="hero-headline">NICHT JEDER TREND IST DEIN GELD WERT.</h1>
+      <p class="hero-subheadline">TRENDS VERGEHEN. SCHULDEN BLEIBEN.</p>
+      <p class="hero-body">Kennst du das? Du scrollst durch Social Media, siehst etwas und kaufst es — und bereust es kurz danach. Wir zeigen dir, wie du bewusster mit deinem Geld umgehst, Impulskäufe erkennst und Trends hinterfragst. Teste dich im Quiz, rechne nach, was ein Kauf dich wirklich kostet, und lerne, wie du entspannter mit Konsum umgehst.</p>
+
+      <div class="experience-card">
+        <h3>Teile deine Erfahrungen mit Anderen.</h3>
+        <div class="experience-card-text" id="heroExpText">Lade Erfahrungen…</div>
+        <button class="exp-arrow-btn" onclick="document.getElementById('erfahrungen').scrollIntoView({behavior:'smooth'})" aria-label="Zu Erfahrungen scrollen">
+          Alle Erfahrungen →
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="fade-in" style="transition-delay:0.15s">
+      <div class="hero-tiles-grid">
+        <button class="hero-tile" onclick="document.getElementById('challenge').scrollIntoView({behavior:'smooth'})" aria-label="Zur Challenge">
+          <span class="mascot" style="width:44px;height:44px">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="22" ry="22" fill="#E8173A"/><circle cx="30" cy="18" r="14" fill="#E8173A"/><circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/><circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/><path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </span>
+          Bock auf 'ne Challenge?
+        </button>
+        <button class="hero-tile" onclick="document.getElementById('tipps').scrollIntoView({behavior:'smooth'})" aria-label="Zu Tipps">
+          <span class="mascot" style="width:44px;height:44px">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="22" ry="22" fill="#E8173A"/><circle cx="30" cy="18" r="14" fill="#E8173A"/><circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/><circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/><path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </span>
+          Ich möchte Tipps
+        </button>
+        <button class="hero-tile" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})" aria-label="Zum Quiz">
+          <span class="mascot" style="width:44px;height:44px">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="22" ry="22" fill="#E8173A"/><circle cx="30" cy="18" r="14" fill="#E8173A"/><circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/><circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/><path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </span>
+          Teste dein Wissen in einem Quiz!
+        </button>
+        <button class="hero-tile" onclick="document.getElementById('rechner').scrollIntoView({behavior:'smooth'})" aria-label="Zum Rechner">
+          <span class="mascot" style="width:44px;height:44px">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="22" ry="22" fill="#E8173A"/><circle cx="30" cy="18" r="14" fill="#E8173A"/><circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/><circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/><path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </span>
+          Wie viele Stunden arbeitest du für deinen Artikel?
+        </button>
+      </div>
+
+      <div class="hero-brand-row">
+        <div class="brand-card brand-cyan">
+          <span class="brand-title">STOP. BEFORE YOU SHOP.</span>
+          <span class="brand-sub">TRENDS VERGEHEN. SCHULDEN BLEIBEN.</span>
+          <span class="mascot" style="width:38px;height:38px">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="22" ry="22" fill="#E8173A"/><circle cx="30" cy="18" r="14" fill="#E8173A"/><circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/><circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/><path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </span>
+        </div>
+        <div class="brand-card brand-red">
+          <span class="brand-title">STOP. BEFORE YOU SHOP.</span>
+          <span class="brand-sub">TRENDS VERGEHEN. SCHULDEN BLEIBEN.</span>
+          <span class="mascot" style="width:38px;height:38px">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="22" ry="22" fill="#b2f0f0"/><circle cx="30" cy="18" r="14" fill="#b2f0f0"/><circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/><circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/><path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- Video Slider -->
+      <div class="video-slider-wrap" style="position:relative;padding:0 28px;">
+        <button class="slider-arrow left" id="vidPrev" onclick="slideVideo(-1)" aria-label="Vorheriges Video">←</button>
+        <div class="video-slider-track-outer">
+          <div class="video-slider-track" id="videoTrack">
+            <!-- Slide 1 — playable -->
+            <div class="video-slide">
+              <div class="video-thumb">
+                <video controls poster="" preload="none" aria-label="Klamotten & Konsum Video" style="background:#00a8a8;">
+                  <source src="" type="video/mp4">
+                </video>
+                <div class="play-overlay" id="playOverlay1" onclick="handlePlayClick(event)">
+                  <div class="play-btn-circle">▶</div>
+                </div>
+              </div>
+              <div class="video-label">🎬 Klamotten &amp; Konsum</div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="video-slide">
+              <div class="video-thumb" style="background:var(--cyan)">
+                <span class="mascot" style="width:56px;height:56px"><svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="22" ry="22" fill="#E8173A"/><circle cx="30" cy="18" r="14" fill="#E8173A"/><circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/><circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/><path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+                <span class="badge-demnachst">Demnächst</span>
+              </div>
+              <div class="video-label">📚 Bücher &amp; Konsum</div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="video-slide">
+              <div class="video-thumb" style="background:var(--cyan)">
+                <span class="mascot" style="width:56px;height:56px"><svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="22" ry="22" fill="#E8173A"/><circle cx="30" cy="18" r="14" fill="#E8173A"/><circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/><circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/><path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+                <span class="badge-demnachst">Demnächst</span>
+              </div>
+              <div class="video-label">💻 Technologie &amp; Konsum</div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="video-slide">
+              <div class="video-thumb" style="background:var(--cyan)">
+                <span class="mascot" style="width:56px;height:56px"><svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="22" ry="22" fill="#E8173A"/><circle cx="30" cy="18" r="14" fill="#E8173A"/><circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/><circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/><path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+                <span class="badge-demnachst">Demnächst</span>
+              </div>
+              <div class="video-label">💄 Kosmetik &amp; Konsum</div>
+            </div>
+            <!-- Slide 5 -->
+            <div class="video-slide">
+              <div class="video-thumb" style="background:var(--cyan)">
+                <span class="mascot" style="width:56px;height:56px"><svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="34" rx="22" ry="22" fill="#E8173A"/><circle cx="30" cy="18" r="14" fill="#E8173A"/><circle cx="23" cy="15" r="2.5" fill="#1A1A1A"/><circle cx="37" cy="15" r="2.5" fill="#1A1A1A"/><path d="M23 22 Q30 28 37 22" stroke="#1A1A1A" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+                <span class="badge-demnachst">Demnächst</span>
+              </div>
+              <div class="video-label">🍎 Ernährung &amp; Konsum</div>
+            </div>
+          </div>
+        </div>
+        <button class="slider-arrow right" id="vidNext" onclick="slideVideo(1)" aria-label="Nächstes Video">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2 — CHALLENGE -->
+<section id="challenge">
+  <h2 class="section-heading fade-in">DIE WARTE-3-TAGE-CHALLENGE</h2>
+  <div class="challenge-grid">
+    <div class="fade-in">
+      <p style="line-height:1.7;margin-bottom:20px;font-size:1.05rem;">
+        Bevor du etwas kaufst, warte 3 Tage. Ist der Kaufwunsch danach weg? Dann hast du Geld gespart. Ist er noch da? Dann ist es eine bewusste Entscheidung — kein Impulskauf.
+      </p>
+
+      <div class="hashtag-cta">
+        <span style="font-size:1.5rem">📢</span>
+        <span>Mach mit! Poste deine Erfahrung unter <strong>#DreiTageWartenChallenge</strong></span>
+      </div>
+
+      <div class="challenge-card" style="margin-top:20px;">
+        <h3 style="font-family:'Anton',sans-serif;font-size:1.2rem;text-transform:uppercase;color:var(--dark);margin-bottom:16px;">⏱ Starte deinen Timer</h3>
+        <div class="timer-input-row">
+          <input type="text" id="timerItem" placeholder="Was möchtest du kaufen?" aria-label="Was möchtest du kaufen?">
+          <button class="btn-red" onclick="startTimer()" aria-label="3-Tage-Timer starten">
+            ⏳ 3-Tage-Timer starten
+          </button>
+        </div>
+        <div class="timer-display" id="timerDisplay">
+          <div class="timer-item-name" id="timerItemName"></div>
+          <div class="timer-digits" id="timerDigits">72:00:00:00</div>
+          <div class="timer-labels">
+            <span>Tage</span><span>Std.</span><span>Min.</span><span>Sek.</span>
+          </div>
+          <div class="timer-done-msg" id="timerDoneMsg" style="display:none">
+            72 Stunden sind um! Willst du es immer noch kaufen? Wenn ja — dann war es kein Impulskauf. 💪
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-in" style="transition-delay:0.15s">
+      <div class="social-cards-grid">
+        <div class="social-card">
+          <div class="sc-name">@lisa_k ✨</div>
+          Ich wollte diese Handtasche für 89€ kaufen. 3 Tage gewartet — und dann: totales Desinteresse. 💸 gespart!
+        </div>
+        <div class="social-card">
+          <div class="sc-name">@michi_buys 🛍</div>
+          Die Challenge hat mir klar gemacht, wie viele Dinge ich nur aus Langeweile kaufen will.
+        </div>
+        <div class="social-card">
+          <div class="sc-name">@sarah_minimal 🌱</div>
+          Nach 3 Tagen hab ich das Produkt nochmal gegoogelt — und es hat sogar 20% Rabatt bekommen. Doppelter Win!
+        </div>
+        <div class="social-card">
+          <div class="sc-name">@tom_budget 📊</div>
+          Diese Challenge läuft jetzt seit 2 Wochen. Ich hab schon über 200€ gespart. Unglaublich.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 — TIPPS -->
+<section id="tipps">
+  <h2 class="section-heading fade-in">9 TIPPS FÜR BEWUSSTEREN KONSUM</h2>
+  <div class="accordion-list fade-in" id="accordionList">
+    <!-- Generated by JS -->
+  </div>
+</section>
+
+<!-- SECTION 4 — QUIZ -->
+<section id="quiz">
+  <h2 class="section-heading fade-in" style="text-align:center;">WIE TRENDANFÄLLIG BIST DU?</h2>
+  <div class="quiz-wrap">
+    <div class="progress-bar-outer fade-in">
+      <div class="progress-bar-inner" id="quizProgress" style="width:0%"></div>
+    </div>
+
+    <div class="quiz-card fade-in" id="quizCard">
+      <div class="q-count" id="qCount">Frage 1 von 8</div>
+      <div class="q-text" id="qText">Lade Quiz…</div>
+      <div class="quiz-answers">
+        <button class="quiz-btn" onclick="answerQuiz(0)" aria-label="Antwort: Nie">Nie</button>
+        <button class="quiz-btn" onclick="answerQuiz(1.5)" aria-label="Antwort: Manchmal">Manchmal</button>
+        <button class="quiz-btn" onclick="answerQuiz(3)" aria-label="Antwort: Oft">Oft</button>
+      </div>
+    </div>
+
+    <div class="quiz-result fade-in" id="quizResult">
+      <div class="result-score" id="resultScore">0</div>
+      <div class="result-label" id="resultLabel"></div>
+      <p id="resultText" style="color:#555;font-size:0.95rem;line-height:1.6;"></p>
+      <div class="result-btns">
+        <button class="btn-red" onclick="document.getElementById('tipps').scrollIntoView({behavior:'smooth'})">Tipps ansehen →</button>
+        <button class="btn-outline" onclick="shareQuizResult()" aria-label="Ergebnis teilen">Ergebnis teilen 📣</button>
+        <button class="btn-outline" onclick="restartQuiz()" aria-label="Quiz neu starten">Nochmal →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5 — RECHNER -->
+<section id="rechner">
+  <h2 class="section-heading fade-in">WAS KOSTET DICH DAS WIRKLICH?</h2>
+  <div class="rechner-wrap">
+    <div class="rechner-card fade-in">
+      <div class="rechner-field">
+        <label for="preis">Preis des Artikels (€)</label>
+        <div class="rechner-input-row">
+          <input type="number" id="preis" placeholder="z.B. 120" min="0" step="0.01" oninput="calcRechner()" aria-label="Preis des Artikels">
+        </div>
+      </div>
+      <div class="rechner-field">
+        <label for="lohn">Dein Stundenlohn (€/h)</label>
+        <div class="rechner-input-row">
+          <input type="number" id="lohn" placeholder="z.B. 14.00" min="0" step="0.01" oninput="calcRechner()" aria-label="Stundenlohn">
+          <button class="btn-mini" onclick="setMindestlohn()" aria-label="Mindestlohn verwenden">Mindestlohn (12,82 €/h)</button>
+        </div>
+      </div>
+
+      <div class="rechner-result" id="rechnerResult">
+        <div class="rechner-clock">⏱</div>
+        <div class="rechner-hours" id="rechnerHours">0 Stunden</div>
+        <div class="rechner-context" id="rechnerContext"></div>
+        <div class="rechner-wert">Ist es das wirklich wert?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6 — ERFAHRUNGEN -->
+<section id="erfahrungen">
+  <h2 class="section-heading fade-in">TEILE DEINE ERFAHRUNGEN MIT UNS.</h2>
+
+  <div style="position:relative;margin-bottom:8px;">
+    <div class="stories-slider-outer fade-in" id="storiesOuter">
+      <div class="stories-slider-inner" id="storiesInner"></div>
+    </div>
+    <button class="slider-arrow left" style="top:50%;left:-16px;" onclick="slideStory(-1)" aria-label="Vorherige Geschichte">←</button>
+    <button class="slider-arrow right" style="top:50%;right:-16px;" onclick="slideStory(1)" aria-label="Nächste Geschichte">→</button>
+  </div>
+  <div class="stories-nav" id="storiesNav"></div>
+
+  <div class="submit-form fade-in">
+    <h3>Deine Geschichte einreichen</h3>
+    <textarea id="expText" rows="4" maxlength="300" placeholder="Deine Erfahrung (max. 300 Zeichen)" oninput="updateCharCount()" aria-label="Deine Erfahrung"></textarea>
+    <div class="char-count"><span id="charCount">0</span>/300 Zeichen</div>
+    <input type="text" id="expName" placeholder="Dein Name und Alter (optional)" aria-label="Name und Alter optional">
+    <button class="btn-red" onclick="submitStory()" aria-label="Erfahrung einreichen">Einreichen →</button>
+  </div>
+</section>
+
+<!-- SECTION 7 — HILFSANGEBOTE -->
+<section id="hilfsangebote">
+  <h2 class="section-heading fade-in">HILFSANGEBOTE</h2>
+  <div class="help-grid">
+    <div class="help-card fade-in">
+      <h3>Schuldnerberatung Deutschland</h3>
+      <p>Kostenlose Beratung bei Schulden und finanziellen Engpässen.</p>
+      <a href="https://schuldnerberatung.de" target="_blank" rel="noopener" class="help-link" aria-label="Schuldnerberatung Deutschland besuchen">schuldnerberatung.de →</a>
+    </div>
+    <div class="help-card fade-in" style="transition-delay:0.1s">
+      <h3>Verbraucherzentrale</h3>
+      <p>Unabhängige Beratung zu Finanzen, Konsum und Verbraucherrechten.</p>
+      <a href="https://verbraucherzentrale.de" target="_blank" rel="noopener" class="help-link" aria-label="Verbraucherzentrale besuchen">verbraucherzentrale.de →</a>
+    </div>
+    <div class="help-card fade-in" style="transition-delay:0.2s">
+      <h3>Bundeszentrale für politische Bildung</h3>
+      <p>Informationen und Materialien zu Finanzkompetenz und bewusstem Konsum.</p>
+      <a href="https://bpb.de" target="_blank" rel="noopener" class="help-link" aria-label="Bundeszentrale besuchen">bpb.de →</a>
+    </div>
+    <div class="help-card fade-in" style="transition-delay:0.3s">
+      <h3>Caritas Schuldnerberatung</h3>
+      <p>Hilfe und Beratung für Menschen in finanziellen Notlagen.</p>
+      <a href="https://caritas.de" target="_blank" rel="noopener" class="help-link" aria-label="Caritas besuchen">caritas.de →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">STOP. BEFORE YOU SHOP.</div>
+  <div class="footer-tag">TRENDS VERGEHEN. SCHULDEN BLEIBEN.</div>
+  <div class="footer-mascot">
+    <svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg" width="120" height="70">
+      <!-- peeking mascot from bottom edge -->
+      <ellipse cx="60" cy="80" rx="44" ry="44" fill="white" opacity="0.15"/>
+      <circle cx="60" cy="36" r="28" fill="white" opacity="0.2"/>
+      <ellipse cx="60" cy="80" rx="44" ry="44" fill="#b2f0f0"/>
+      <circle cx="60" cy="34" r="28" fill="#b2f0f0"/>
+      <circle cx="50" cy="28" r="4" fill="#1A1A1A"/>
+      <circle cx="70" cy="28" r="4" fill="#1A1A1A"/>
+      <path d="M50 38 Q60 46 70 38" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div style="background:rgba(0,0,0,0.12);padding:12px 24px;margin-top:16px;font-size:0.78rem;color:rgba(255,255,255,0.7);text-align:center;">
+    © 2024 Stop Before You Shop · Bildungsprojekt · Alle Rechte vorbehalten
+  </div>
+</footer>
+
+<!-- SCROLL TO TOP -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Nach oben scrollen">↑</button>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+<script>
+// ===== HAMBURGER MENU =====
+function openMenu() {
+  document.getElementById('menuPanel').classList.add('open');
+  document.getElementById('menuOverlay').classList.add('open');
+  document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'true');
+}
+function closeMenu() {
+  document.getElementById('menuPanel').classList.remove('open');
+  document.getElementById('menuOverlay').classList.remove('open');
+  document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'false');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== SCROLL TO TOP =====
+window.addEventListener('scroll', () => {
+  document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 300);
+});
+
+// ===== FADE IN =====
+const fadeObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+// ===== STORIES =====
+const baseStories = [
+  { text: "Ich habe diesen Monat fast 300€ für Klamotten ausgegeben weil ich dachte, dass meine Sachen vom letzten Jahr mir nicht mehr gefallen. Letztendlich habe ich fast nichts von den neuen Sachen getragen. Von dem Geld hätte ich für einen ganzen Monat einkaufen gehen können.", author: "Marie, 24" },
+  { text: "Ich habe mir Sneaker für 120€ gekauft, weil sie auf TikTok viral gegangen sind. Nach zwei Wochen hat sie keiner mehr getragen – auch ich nicht. Die stehen seitdem unberührt im Regal.", author: "Lena, 19" },
+  { text: "Ich habe mir überlegt, eine Handyhülle zu kaufen. Drei Tage später hatte ich sie komplett vergessen. Das Geld hab ich dann lieber für ein Konzert ausgegeben – viel besser.", author: "Jonas, 22" },
+  { text: "Ich habe dieses Jahr bestimmt 200€ für Dinge ausgegeben, die ich auf Instagram gesehen habe. Die meisten benutze ich kaum. Das Geld hätte ich besser gespart.", author: "Sophie, 17" },
+  { text: "Ich habe gewartet, bevor ich mir eine teure Jacke gekauft habe. Nach drei Tagen wollte ich sie immer noch – und heute ist sie mein liebstes Kleidungsstück.", author: "Tim, 20" }
+];
+
+let stories = [...baseStories];
+const savedStories = JSON.parse(sessionStorage.getItem('extraStories') || '[]');
+stories = [...baseStories, ...savedStories];
+
+let currentStory = 0;
+let storyTimer;
+
+function renderStories() {
+  const inner = document.getElementById('storiesInner');
+  const nav = document.getElementById('storiesNav');
+  inner.innerHTML = stories.map((s, i) =>
+    `<div class="story-card" role="article">
+      "${s.text}"
+      <span class="story-author">— ${s.author}</span>
+    </div>`
+  ).join('');
+  nav.innerHTML = stories.map((_, i) =>
+    `<button class="story-dot ${i === currentStory ? 'active' : ''}" onclick="goStory(${i})" aria-label="Geschichte ${i+1}"></button>`
+  ).join('');
+  inner.style.transform = `translateX(-${currentStory * 100}%)`;
+
+  // Hero experience card
+  const s = stories[currentStory];
+  document.getElementById('heroExpText').innerHTML =
+    `"${s.text.substring(0,120)}…" <em>— ${s.author}</em>`;
+}
+
+function goStory(idx) {
+  currentStory = (idx + stories.length) % stories.length;
+  renderStories();
+  resetStoryTimer();
+}
+function slideStory(dir) { goStory(currentStory + dir); }
+function resetStoryTimer() {
+  clearInterval(storyTimer);
+  storyTimer = setInterval(() => goStory(currentStory + 1), 5000);
+}
+
+renderStories();
+resetStoryTimer();
+
+// Hero experience card rotates too
+setInterval(() => {
+  const s = stories[currentStory];
+  const el = document.getElementById('heroExpText');
+  el.style.opacity = '0';
+  setTimeout(() => {
+    el.innerHTML = `"${s.text.substring(0,120)}…" <em>— ${s.author}</em>`;
+    el.style.opacity = '1';
+  }, 400);
+}, 5000);
+
+// Submit story
+function updateCharCount() {
+  document.getElementById('charCount').textContent = document.getElementById('expText').value.length;
+}
+function submitStory() {
+  const text = document.getElementById('expText').value.trim();
+  const name = document.getElementById('expName').value.trim() || 'Anonym';
+  if (!text) { showToast('Bitte schreibe deine Erfahrung!'); return; }
+  if (text.length > 300) { showToast('Maximal 300 Zeichen!'); return; }
+  const newStory = { text, author: name };
+  const saved = JSON.parse(sessionStorage.getItem('extraStories') || '[]');
+  saved.push(newStory);
+  sessionStorage.setItem('extraStories', JSON.stringify(saved));
+  stories.push(newStory);
+  renderStories();
+  document.getElementById('expText').value = '';
+  document.getElementById('expName').value = '';
+  document.getElementById('charCount').textContent = '0';
+  showToast('Deine Erfahrung wurde hinzugefügt! 🎉');
+}
+
+// ===== VIDEO SLIDER =====
+let videoIdx = 0;
+const videoSlides = 5;
+const visibleVid = () => window.innerWidth <= 768 ? 1 : 2;
+
+function slideVideo(dir) {
+  const maxIdx = videoSlides - visibleVid();
+  videoIdx = Math.max(0, Math.min(maxIdx, videoIdx + dir));
+  const track = document.getElementById('videoTrack');
+  const slideW = track.children[0].offsetWidth + 16;
+  track.style.transform = `translateX(-${videoIdx * slideW}px)`;
+  document.getElementById('vidPrev').style.opacity = videoIdx === 0 ? '0.4' : '1';
+  document.getElementById('vidNext').style.opacity = videoIdx >= maxIdx ? '0.4' : '1';
+}
+
+function handlePlayClick(e) {
+  const overlay = e.currentTarget;
+  const video = overlay.previousElementSibling;
+  if (video && video.tagName === 'VIDEO') {
+    overlay.style.display = 'none';
+    video.play();
+  }
+}
+
+// ===== ACCORDION =====
+const tips = [
+  { title: "Abwarten", body: "Meistens verlieren Dinge nach ein paar Tagen ihren Reiz. Lege dir eine Sperrfrist auf — z.B. alles über 30€ → 30 Tage warten." },
+  { title: "Keine Spontankäufe", body: "Schreibe einen Einkaufszettel und halte dich strikt daran. Setze auf Qualität statt Quantität." },
+  { title: "Werbung bewusst analysieren", body: "Welche Bedürfnisse werden angesprochen? Bringt mir das Produkt wirklich den erhofften Nutzen? Konsum ist oft nur eine Kombination aus schönen Bildern, Sprache und Musik." },
+  { title: "Nicht jeden Trend mitmachen", body: "Trends sind temporär. Dein Geld ist real." },
+  { title: "Ersatzbefriedigung finden", body: "Konsumlust umlenken: alten Pulli neu stylen, die alte Kommode neu anstreichen, die Wohnung umstellen, eine neue Frisur ausprobieren." },
+  { title: "Leihen statt kaufen", body: "Muss es wirklich gekauft werden? Skiausrüstung im Winter, Camper im Sommer — frag dich, ob Leihen die bessere Option ist." },
+  { title: "Was steckt wirklich dahinter?", body: "Wir versuchen oft, eine tiefere Unzufriedenheit mit einem neuen Gegenstand zu überdecken. Lohnt es sich, den echten Grund zu hinterfragen, bevor du wieder kurz davor bist, etwas zu kaufen?" },
+  { title: "Offline kaufen, wenn sinnvoll", body: "Schuhe, Kleidung etc. lieber vor Ort anprobieren — so vermeidest du Fehlkäufe, Versandkosten und das 'Ich schick's eh nicht zurück'-Problem." },
+  { title: "Brauchst du es wirklich?", body: "Vor dem Kauf fragen: Welche Ressourcen stecken im Produkt? Was kostet es dich auch als Besitzer noch — Lagerung, Pflege, Platz?" }
+];
+
+const accList = document.getElementById('accordionList');
+accList.innerHTML = tips.map((t, i) => `
+  <div class="accordion-item" id="acc${i}">
+    <button class="accordion-header" onclick="toggleAcc(${i})" aria-expanded="false" aria-controls="accBody${i}">
+      <span class="acc-num">0${i+1}</span>
+      <span class="acc-title">${t.title}</span>
+      <span class="accordion-icon">+</span>
+    </button>
+    <div class="accordion-body" id="accBody${i}" role="region">${t.body}</div>
+  </div>
+`).join('');
+
+function toggleAcc(i) {
+  const item = document.getElementById(`acc${i}`);
+  const btn = item.querySelector('.accordion-header');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.accordion-item.open').forEach(el => {
+    el.classList.remove('open');
+    el.querySelector('.accordion-header').setAttribute('aria-expanded','false');
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    btn.setAttribute('aria-expanded','true');
+  }
+}
+
+// ===== QUIZ =====
+const questions = [
+  "Ich kaufe Dinge, die ich auf Social Media gesehen habe.",
+  "Ich bereue Käufe kurz danach.",
+  "Ich kaufe, weil Freunde es auch haben.",
+  "Ich kaufe impulsiv, ohne vorher nachzudenken.",
+  "Ich kaufe Dinge, die ich danach nie benutze.",
+  "Werbung beeinflusst meine Kaufentscheidungen stark.",
+  "Ich gebe mehr aus als ich eigentlich wollte.",
+  "Ich kaufe etwas, obwohl ich es eigentlich nicht brauche."
+];
+let qIdx = 0, score = 0;
+
+function renderQuestion() {
+  document.getElementById('quizCard').style.display = 'block';
+  document.getElementById('quizResult').classList.remove('active');
+  document.getElementById('qCount').textContent = `Frage ${qIdx+1} von ${questions.length}`;
+  document.getElementById('qText').textContent = questions[qIdx];
+  document.getElementById('quizProgress').style.width = `${(qIdx / questions.length) * 100}%`;
+}
+
+function answerQuiz(pts) {
+  score += pts;
+  qIdx++;
+  if (qIdx < questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('quizCard').style.display = 'none';
+  const res = document.getElementById('quizResult');
+  res.classList.add('active');
+  document.getElementById('quizProgress').style.width = '100%';
+  document.getElementById('resultScore').textContent = score.toFixed(1) + ' P';
+
+  let label, text;
+  if (score <= 10) { label = "Kaum trendanfällig – Respekt! 💪"; text = "Du triffst Kaufentscheidungen sehr bewusst. Weiter so!"; }
+  else if (score <= 18) { label = "Weniger trendanfällig – du machst das schon gut!"; text = "Du bist auf einem guten Weg und hast ein gesundes Verhältnis zu Konsum."; }
+  else if (score <= 25) { label = "Teilweise trendanfällig – ein paar Tipps könnten helfen."; text = "Du bist gelegentlich anfällig für Impulskäufe. Unsere Tipps können dir helfen!"; }
+  else { label = "Stark trendanfällig – schau dir unsere Tipps an!"; text = "Impulskäufe spielen eine große Rolle in deinem Konsumverhalten. Keine Sorge — mit ein paar Strategien lässt sich das ändern!"; }
+
+  document.getElementById('resultLabel').textContent = label;
+  document.getElementById('resultText').textContent = text;
+}
+
+function restartQuiz() {
+  qIdx = 0; score = 0;
+  renderQuestion();
+}
+
+function shareQuizResult() {
+  const text = `Ich habe gerade den Trendanfälligkeits-Quiz gemacht auf stopbeforeyoushop.de — teste dich selbst! #DreiTageWartenChallenge`;
+  navigator.clipboard.writeText(text).then(() => showToast('Text kopiert! 📋')).catch(() => showToast('Kopieren nicht möglich.'));
+}
+
+renderQuestion();
+
+// ===== RECHNER =====
+function setMindestlohn() {
+  document.getElementById('lohn').value = '12.82';
+  calcRechner();
+}
+
+function calcRechner() {
+  const preis = parseFloat(document.getElementById('preis').value);
+  const lohn = parseFloat(document.getElementById('lohn').value);
+  const res = document.getElementById('rechnerResult');
+  if (!preis || !lohn || preis <= 0 || lohn <= 0) { res.classList.remove('active'); return; }
+
+  const hours = preis / lohn;
+  const h = Math.floor(hours);
+  const m = Math.round((hours - h) * 60);
+
+  let displayStr;
+  if (h === 0) displayStr = `${m} Minuten`;
+  else if (m === 0) displayStr = `${h} Stunde${h !== 1 ? 'n' : ''}`;
+  else displayStr = `${h} Stunde${h !== 1 ? 'n' : ''} und ${m} Minuten`;
+
+  document.getElementById('rechnerHours').textContent = `Du arbeitest ${displayStr} dafür.`;
+
+  const workdays = hours / 8;
+  let context;
+  if (workdays < 0.25) context = "Das sind nur ein paar Minuten Arbeit.";
+  else if (workdays < 0.5) context = "Das ist fast ein Viertel eines Arbeitstages.";
+  else if (workdays < 1) context = "Das ist fast ein halber Arbeitstag.";
+  else if (workdays < 2) context = `Das ist etwa ${workdays.toFixed(1)} Arbeitstage.`;
+  else context = `Das sind mehr als ${Math.floor(workdays)} volle Arbeitstage.`;
+  document.getElementById('rechnerContext').textContent = context;
+
+  res.classList.add('active');
+}
+
+// ===== CHALLENGE TIMER =====
+let timerInterval;
+const TIMER_KEY = 'timerEnd';
+const TIMER_ITEM_KEY = 'timerItem';
+
+function startTimer() {
+  const item = document.getElementById('timerItem').value.trim();
+  if (!item) { showToast('Bitte gib ein, was du kaufen möchtest!'); return; }
+  const endTime = Date.now() + 72 * 60 * 60 * 1000;
+  sessionStorage.setItem(TIMER_KEY, endTime.toString());
+  sessionStorage.setItem(TIMER_ITEM_KEY, item);
+  runTimer(endTime, item);
+}
+
+function runTimer(endTime, item) {
+  const display = document.getElementById('timerDisplay');
+  display.classList.add('active');
+  document.getElementById('timerItemName').textContent = `Artikel: "${item}"`;
+
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    const remaining = endTime - Date.now();
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('timerDigits').textContent = '00:00:00:00';
+      document.getElementById('timerDoneMsg').style.display = 'block';
+      return;
+    }
+    const days = Math.floor(remaining / 86400000);
+    const hrs = Math.floor((remaining % 86400000) / 3600000);
+    const mins = Math.floor((remaining % 3600000) / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    document.getElementById('timerDigits').textContent =
+      `${String(days).padStart(2,'0')}:${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+  }, 1000);
+}
+
+// Restore timer from sessionStorage
+const savedEnd = sessionStorage.getItem(TIMER_KEY);
+const savedItem = sessionStorage.getItem(TIMER_ITEM_KEY);
+if (savedEnd && savedItem) {
+  document.getElementById('timerItem').value = savedItem;
+  runTimer(parseInt(savedEnd), savedItem);
+}
+</script>
+</body>
+</html>
