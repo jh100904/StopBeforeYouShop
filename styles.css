@@ -211,6 +211,11 @@
   /* size variants for typographic rhythm — biggest on a page's focus section, smaller on side sections */
   .sec-head.xl { font-size: clamp(2.7rem, 8vw, 5.4rem); line-height: 0.92; max-width: 15ch; }
   .sec-head.sm { font-size: clamp(1.6rem, 3.4vw, 2.3rem); max-width: 22ch; }
+  /* Mobile: Ueberschriften nicht so eng stapeln, wenn sie auf mehrere Zeilen umbrechen */
+  @media (max-width: 760px) {
+    .sec-head { line-height: 1.05; }
+    .sec-head.xl { line-height: 1.0; }
+  }
   .band-red .sec-head { color: #fff; }
   .sec-lead { font-size: 1.08rem; max-width: 56ch; color: #2a3a3a; }
   .sec-lead.lg { font-size: clamp(1.18rem, 2.2vw, 1.5rem); font-weight: 500; color: #16403f; max-width: 50ch; }
