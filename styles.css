@@ -213,8 +213,8 @@
   .sec-head.sm { font-size: clamp(1.6rem, 3.4vw, 2.3rem); max-width: 22ch; }
   /* Mobile: Ueberschriften nicht so eng stapeln, wenn sie auf mehrere Zeilen umbrechen */
   @media (max-width: 760px) {
-    .sec-head { line-height: 1.12; }
-    .sec-head.xl { line-height: 1.1; }
+    .sec-head { line-height: 1.22; }
+    .sec-head.xl { line-height: 1.2; }
   }
   .band-red .sec-head { color: #fff; }
   .sec-lead { font-size: 1.08rem; max-width: 56ch; color: #2a3a3a; }
