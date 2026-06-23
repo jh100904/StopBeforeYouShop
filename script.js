@@ -104,16 +104,24 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateStoryPos() {
     storiesTrack.style.transform = 'translateX(-' + (curStory * 100) + '%)';
     $$('.s-dot', storiesDots).forEach(function (d, i) { d.classList.toggle('active', i === curStory); });
-    updateTeaser();
   }
-  function updateTeaser() {
-    var s = stories[curStory];
+  var teaserIdx = 0, teaserTimer;
+  function showTeaser() {
+    var s = stories[teaserIdx];
     teaserQuote.style.opacity = '0';
     setTimeout(function () {
       var t = s.text.length > 116 ? s.text.substring(0, 116).trim() + '…' : s.text;
       teaserQuote.innerHTML = '<span class="tq-text">\u201C' + escapeHtml(t) + '\u201D</span><span class="tq-author">\u2014 ' + escapeHtml(s.author) + '</span>';
       teaserQuote.style.opacity = '1';
     }, 200);
+  }
+  function startTeaserRotation() {
+    showTeaser();
+    clearInterval(teaserTimer);
+    teaserTimer = setInterval(function () {
+      teaserIdx = (teaserIdx + 1) % stories.length;
+      showTeaser();
+    }, 5000);
   }
   function goStory(i) {
     curStory = (i + stories.length) % stories.length;
@@ -135,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
   $('#storyPrev').addEventListener('click', function () { stopAuto(); goStory(curStory - 1); });
   $('#storyNext').addEventListener('click', function () { stopAuto(); goStory(curStory + 1); });
   renderStories();
-  // Auto-Rotation deaktiviert - Karussell bewegt sich nur per Klick
+  startTeaserRotation(); // Hero-Vorschau rotiert eigenstaendig; Karussell unten nur per Klick
 
   // Submit story
   var expText = $('#expText'), expName = $('#expName'), charCount = $('#charCount');
