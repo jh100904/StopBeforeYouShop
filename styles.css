@@ -814,15 +814,24 @@
   /* ============ SCROLL TOP ============ */
   #scroll-top {
     position: fixed; bottom: 28px; right: 28px; z-index: 90;
-    width: 52px; height: 52px; border-radius: 999px; border: none; cursor: pointer;
-    background: var(--red); color: #fff; font-size: 1.4rem;
+    width: 58px; height: 58px; border-radius: 999px; border: none; cursor: pointer;
+    background: #fff; padding: 0; overflow: hidden;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 10px 26px rgba(232,23,58,.4);
+    box-shadow: 0 10px 26px rgba(0,0,0,.2);
     opacity: 0; pointer-events: none; transform: translateY(14px) scale(.9);
     transition: opacity .3s, transform .3s var(--ease);
   }
+  #scroll-top img { width: 82%; height: 82%; object-fit: contain; }
   #scroll-top.show { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
   #scroll-top:hover { transform: translateY(-4px) scale(1.06); }
+  .scroll-mascot {
+    position: fixed; left: 12px; top: 90px; z-index: 80; width: 42px;
+    pointer-events: none; opacity: 0; transition: opacity .3s, top .12s linear;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,.18));
+  }
+  .scroll-mascot.show { opacity: 1; }
+  .scroll-mascot img { width: 100%; display: block; }
+  @media (max-width: 760px) { .scroll-mascot { display: none; } }
 
   /* ============ TOAST ============ */
   .toast {
@@ -909,6 +918,13 @@
   .bl-finder-link:hover { text-decoration: underline; }
   .bl-finder-link .arr, .bl-finder-row .arr { transition: transform .18s var(--ease); }
   .bl-finder-link:hover .arr { transform: translateX(4px); }
+
+  /* ============ SCROLLBAR ============ */
+  html { scrollbar-width: thin; scrollbar-color: var(--red) var(--mint-soft); }
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: var(--mint-soft); }
+  ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 999px; border: 3px solid var(--mint-soft); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--red-deep); }
 
   /* ============ VIDEO LIGHTBOX ============ */
   .video-modal { position: fixed; inset: 0; z-index: 1200; display: none; align-items: center; justify-content: center; padding: 24px; }

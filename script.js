@@ -861,9 +861,17 @@ document.addEventListener('DOMContentLoaded', function () {
   })();
 
   // === SECTION: scroll-to-top + reveal on scroll ===
-  var scrollTop = $('#scroll-top');
+  var scrollTop = $('#scroll-top'), scrollMascot = $('.scroll-mascot');
   window.addEventListener('scroll', function () {
-    scrollTop.classList.toggle('show', window.pageYOffset > 300);
+    var y = window.pageYOffset;
+    scrollTop.classList.toggle('show', y > 300);
+    if (scrollMascot) {
+      var de = document.documentElement;
+      var max = de.scrollHeight - de.clientHeight;
+      var p = max > 0 ? y / max : 0;
+      scrollMascot.style.top = (90 + p * (window.innerHeight - 170)) + 'px';
+      scrollMascot.classList.toggle('show', y > 200);
+    }
   }, { passive: true });
   scrollTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
