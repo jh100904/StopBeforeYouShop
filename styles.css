@@ -881,6 +881,11 @@
     .clock-unit { min-width: 0; flex: 1; }
     .hashtag-band { flex-wrap: wrap; }
   }
+  /* ============ SHARE-CTA (Challenge) ============ */
+  .share-cta { margin-top: 24px; }
+  .share-cta-label { display: block; font-weight: 700; font-size: .92rem; color: var(--dark); margin-bottom: 12px; }
+  .share-cta-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+
   /* ============ VIDEO LIGHTBOX ============ */
   .video-modal { position: fixed; inset: 0; z-index: 1200; display: none; align-items: center; justify-content: center; padding: 24px; }
   .video-modal.open { display: flex; }
