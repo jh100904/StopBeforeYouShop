@@ -1,0 +1,6 @@
+# Große Video-Quelldateien NICHT zu GitHub hochladen (über 100 MB -> Push schlägt fehl).
+# Das fertige, komprimierte Web-Video liegt unter assets/ und wird normal mitgenommen.
+*.mov
+
+# Versehentlich verschachtelte Projektkopie
+/StopBeforeYouShop/

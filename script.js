@@ -183,11 +183,43 @@ document.addEventListener('DOMContentLoaded', function () {
   vidPrev.addEventListener('click', function () { vIdx = Math.max(0, vIdx - 1); updateVideo(); });
   vidNext.addEventListener('click', function () { vIdx = Math.min(maxVidIdx(), vIdx + 1); updateVideo(); });
   $$('.v-play').forEach(function (p) {
-    p.addEventListener('click', function () { showToast('▶ „' + p.getAttribute('data-video') + '“ – Video startet bald!'); });
+    p.addEventListener('click', function () {
+      var src = p.getAttribute('data-src');
+      if (src) { openVideo(src); }
+      else { showToast('▶ „' + p.getAttribute('data-video') + '“ – Video startet bald!'); }
+    });
   });
   updateVideo();
 
   }
+
+  // === SECTION: video lightbox ===
+  (function () {
+    var modal = $('#videoModal');
+    if (!modal) return;
+    var player = $('#videoPlayer');
+    var source = player.querySelector('source');
+    window.openVideo = function (src) {
+      source.setAttribute('src', src);
+      player.load();
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      var pr = player.play();
+      if (pr && pr.catch) { pr.catch(function () {}); }
+    };
+    function closeVideo() {
+      player.pause();
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    $('#videoClose').addEventListener('click', closeVideo);
+    modal.querySelector('[data-vclose]').addEventListener('click', closeVideo);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('open')) { closeVideo(); }
+    });
+  })();
 
   // === SECTION: reminder helpers (used by Wunsch-Parkplatz) ===
   function pad(n) { return String(n).padStart(2, '0'); }
