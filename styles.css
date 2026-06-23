@@ -581,6 +581,9 @@
     cursor: pointer; transition: transform .16s var(--ease), background .18s, color .18s, border-color .18s;
   }
   .quiz-btn:hover { background: var(--red); border-color: var(--red); color: #fff; transform: translateY(-4px); }
+  .quiz-btn.selected { background: var(--red); border-color: var(--red); color: #fff; }
+  .quiz-nav { display: flex; justify-content: space-between; gap: 14px; margin-top: 26px; }
+  .quiz-nav .btn:disabled { opacity: .4; cursor: default; pointer-events: none; }
   .quiz-result { display: none; background: var(--white); border-radius: var(--radius-lg); padding: 44px 36px; text-align: center; box-shadow: var(--shadow-lift); }
   .quiz-result.active { display: block; animation: pop .45s var(--ease); }
   .result-emoji { width: 130px; margin: 0 auto 6px; }
@@ -861,9 +864,16 @@
     .submit-card { grid-template-columns: 1fr; }
     .submit-mascot { display: none; }
     .help-grid { grid-template-columns: 1fr; }
-    .stories-shell .slider-arrow.left { left: 6px; }
-    .stories-shell .slider-arrow.right { right: 6px; }
+    /* Wunsch-Parkplatz: Formular am Handy volle Breite, damit Preisfeld lesbar ist */
+    .park-grid { grid-template-columns: 1fr; }
+    .park-form-card { position: static; top: auto; }
+    /* Erfahrungs-Stories: Pfeile unter die Karte statt ueber den Text */
     .story-card { padding: 32px 24px; }
+    .stories-shell { padding-bottom: 62px; }
+    .stories-shell .slider-arrow { width: 44px; height: 44px; top: auto; bottom: 0; transform: none; }
+    .stories-shell .slider-arrow:hover:not(:disabled) { transform: none; }
+    .stories-shell .slider-arrow.left { left: calc(50% - 52px); right: auto; }
+    .stories-shell .slider-arrow.right { left: calc(50% + 8px); right: auto; }
     .acc-body-inner { padding-left: 24px; }
   }
   @media (max-width: 460px) {

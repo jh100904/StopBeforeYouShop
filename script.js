@@ -394,9 +394,11 @@ document.addEventListener('DOMContentLoaded', function () {
     { max: 20, label: "Eher trendanfällig", text: "Impulskäufe spielen eine spürbare Rolle bei dir. Mit ein paar Strategien lässt sich das aber gut in den Griff bekommen.", emoji: "assets/mascot-selfie-trim.png" },
     { max: 24, label: "Stark trendanfällig", text: "Trends bestimmen deinen Konsum stark. Keine Sorge – die Warte-3-Tage-Challenge und unsere Tipps sind genau für dich gemacht.", emoji: "assets/mascot-run-trim.png" }
   ];
-  var qIdx = 0, score = 0;
+  var qIdx = 0, answers = [];
   var quizCard = $('#quizCard'), quizResult = $('#quizResult');
   var quizProgress = $('#quizProgress'), quizProgressLabel = $('#quizProgressLabel');
+  var quizBack = $('#quizBack'), quizNext = $('#quizNext');
+  var answerBtns = $$('.quiz-btn');
   function renderQuestion() {
     quizCard.style.display = 'block';
     quizResult.classList.remove('active');
@@ -404,16 +406,30 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#qText').textContent = questions[qIdx];
     quizProgress.style.width = (qIdx / questions.length * 100) + '%';
     quizProgressLabel.textContent = qIdx + ' / ' + questions.length;
+    answerBtns.forEach(function (b) {
+      b.classList.toggle('selected', answers[qIdx] !== undefined && parseFloat(b.getAttribute('data-pts')) === answers[qIdx]);
+    });
+    if (quizBack) quizBack.disabled = qIdx === 0;
+    if (quizNext) {
+      quizNext.disabled = answers[qIdx] === undefined;
+      quizNext.innerHTML = (qIdx === questions.length - 1 ? 'Ergebnis' : 'Weiter') + ' <span class="arr">\u2192</span>';
+    }
   }
-  $$('.quiz-btn').forEach(function (btn) {
+  answerBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
-      score += parseFloat(btn.getAttribute('data-pts'));
-      qIdx++;
-      if (qIdx < questions.length) renderQuestion();
-      else showResult();
+      answers[qIdx] = parseFloat(btn.getAttribute('data-pts'));
+      answerBtns.forEach(function (b) { b.classList.toggle('selected', b === btn); });
+      if (quizNext) quizNext.disabled = false;
     });
   });
+  if (quizBack) quizBack.addEventListener('click', function () { if (qIdx > 0) { qIdx--; renderQuestion(); } });
+  if (quizNext) quizNext.addEventListener('click', function () {
+    if (answers[qIdx] === undefined) return;
+    if (qIdx < questions.length - 1) { qIdx++; renderQuestion(); }
+    else showResult();
+  });
   function showResult() {
+    var score = answers.reduce(function (a, b) { return a + (b || 0); }, 0);
     quizCard.style.display = 'none';
     quizProgress.style.width = '100%';
     quizProgressLabel.textContent = questions.length + ' / ' + questions.length;
@@ -425,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function () {
     quizResult.classList.add('active');
   }
   $('#restartQuiz').addEventListener('click', function () {
-    qIdx = 0; score = 0; renderQuestion();
+    qIdx = 0; answers = []; renderQuestion();
   });
   $('#shareResult').addEventListener('click', function () {
     var label = $('#resultLabel').textContent;
