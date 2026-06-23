@@ -869,7 +869,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var de = document.documentElement;
       var max = de.scrollHeight - de.clientHeight;
       var p = max > 0 ? y / max : 0;
-      scrollMascot.style.top = (90 + p * (window.innerHeight - 170)) + 'px';
+      scrollMascot.style.top = (84 + p * (window.innerHeight - 230)) + 'px';
       scrollMascot.classList.toggle('show', y > 200);
     }
   }, { passive: true });
