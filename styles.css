@@ -275,9 +275,9 @@
   .th-days { justify-self: center; align-self: center; display: flex; flex-direction: column; gap: 12px; width: min(100%, 360px); }
   .day-card { display: flex; align-items: baseline; gap: 14px; background: #fff; border: 1px solid rgba(0,120,120,.12);
     border-radius: 16px; padding: 16px 20px; box-shadow: 0 8px 22px rgba(10,40,40,.08); }
-  .day-card.last { background: var(--cyan); border-color: transparent; }
+  .day-card.last { background: #fff; border-color: rgba(0,120,120,.12); }
   .day-card .day-n { font-family: 'Anton', sans-serif; font-size: 1.35rem; color: var(--red); flex-shrink: 0; }
-  .day-card.last .day-n { color: var(--dark); }
+  .day-card.last .day-n { color: var(--red); }
   .day-card .day-l { font-weight: 600; font-size: .98rem; color: #2a3a3a; }
   @media (max-width: 760px) { .th-days { display: none; } }
   /* result scale (selbsttest hero) */
