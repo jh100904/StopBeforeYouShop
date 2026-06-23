@@ -72,6 +72,19 @@ document.addEventListener('DOMContentLoaded', function () {
   var searchBtn = $('#searchBtn');
   if (searchBtn) searchBtn.addEventListener('click', function () { showToast('Suche kommt bald'); });
 
+  // === SECTION: Bundesland-Finder (Hilfsangebote) ===
+  var blSelect = $('#bundeslandSelect'), vzLink = $('#vzLink');
+  if (blSelect && vzLink) {
+    blSelect.addEventListener('change', function () {
+      if (blSelect.value) {
+        vzLink.setAttribute('href', blSelect.value);
+        vzLink.hidden = false;
+      } else {
+        vzLink.hidden = true;
+      }
+    });
+  }
+
   // === SECTION: stories (erfahrungen) + hero teaser ===
   if ($('#storiesTrack')) {
   var STORIES_KEY = 'sbys_stories';

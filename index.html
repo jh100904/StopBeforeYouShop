@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260623220135">
+<link rel="stylesheet" href="styles.css?v=20260623220734">
 </head>
 <body>
 
@@ -223,6 +223,34 @@
       <div class="help-card reveal"><h3>Bundeszentrale für politische Bildung</h3><p>Materialien zu Finanzkompetenz und bewusstem Konsum.</p><a href="https://bpb.de" target="_blank" rel="noopener">bpb.de <span class="arr">→</span></a></div>
       <div class="help-card reveal"><h3>Caritas Schuldnerberatung</h3><p>Hilfe und Beratung für Menschen in finanziellen Notlagen.</p><a href="https://caritas.de" target="_blank" rel="noopener">caritas.de <span class="arr">→</span></a></div>
     </div>
+
+    <div class="bl-finder reveal">
+      <h3 class="bl-finder-title">Hilfe in deinem Bundesland</h3>
+      <p class="bl-finder-sub">Wähle dein Bundesland – wir zeigen dir die zuständige Verbraucherzentrale. Eine kostenlose Schuldnerberatung in deiner Nähe findest du über die offizielle Suche der BAG&#8209;Schuldnerberatung.</p>
+      <div class="bl-finder-row">
+        <select id="bundeslandSelect" class="bl-select" aria-label="Bundesland wählen">
+          <option value="">Bundesland wählen …</option>
+          <option value="https://www.verbraucherzentrale-bawue.de">Baden-Württemberg</option>
+          <option value="https://www.verbraucherzentrale-bayern.de">Bayern</option>
+          <option value="https://www.verbraucherzentrale-berlin.de">Berlin</option>
+          <option value="https://www.verbraucherzentrale-brandenburg.de">Brandenburg</option>
+          <option value="https://www.verbraucherzentrale-bremen.de">Bremen</option>
+          <option value="https://www.vzhh.de">Hamburg</option>
+          <option value="https://www.verbraucher.de">Hessen</option>
+          <option value="https://www.verbraucherzentrale-mv.eu">Mecklenburg-Vorpommern</option>
+          <option value="https://www.vzniedersachsen.de">Niedersachsen</option>
+          <option value="https://www.verbraucherzentrale.nrw">Nordrhein-Westfalen</option>
+          <option value="https://www.verbraucherzentrale-rlp.de">Rheinland-Pfalz</option>
+          <option value="https://www.vz-saar.de">Saarland</option>
+          <option value="https://www.verbraucherzentrale-sachsen.de">Sachsen</option>
+          <option value="https://www.vzsa.de">Sachsen-Anhalt</option>
+          <option value="https://www.vzsh.de">Schleswig-Holstein</option>
+          <option value="https://www.vzth.de">Thüringen</option>
+        </select>
+        <a id="vzLink" class="btn btn-red btn-sm" href="#" target="_blank" rel="noopener" hidden>Zur Verbraucherzentrale <span class="arr">→</span></a>
+      </div>
+      <a class="bl-finder-link" href="https://www.meine-schulden.de/beratungsstellen" target="_blank" rel="noopener">Kostenlose Schuldnerberatung in der Nähe finden (offizielle Suche) <span class="arr">→</span></a>
+    </div>
     <h3 class="faq-head reveal">Häufige Fragen</h3>
     <div class="accordion" id="faq"></div>
   </div>
@@ -254,6 +282,6 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel" src="sbys-tweaks.jsx"></script>
-<script src="script.js?v=20260623220135"></script>
+<script src="script.js?v=20260623220734"></script>
 </body>
 </html>
