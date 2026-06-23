@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
   $('#storyPrev').addEventListener('click', function () { stopAuto(); goStory(curStory - 1); });
   $('#storyNext').addEventListener('click', function () { stopAuto(); goStory(curStory + 1); });
   renderStories();
-  startAuto();
+  // Auto-Rotation deaktiviert - Karussell bewegt sich nur per Klick
 
   // Submit story
   var expText = $('#expText'), expName = $('#expName'), charCount = $('#charCount');
