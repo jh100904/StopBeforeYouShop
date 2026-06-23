@@ -7,3 +7,10 @@
 
 # Gesperrte temporaere Vorschaudatei
 _thumb_preview.jpg
+
+# Roh-Uploads + temporaere Vorschau
+P1100*.jpg
+_idmontage.jpg
+
+# Grosses Roh-Video im Hauptordner (komprimierte Version liegt in assets/)
+/klamotten-konsum.mp4
