@@ -876,7 +876,8 @@
   .video-modal.open { display: flex; }
   .video-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.82); backdrop-filter: blur(2px); }
   .video-modal-inner { position: relative; width: min(960px, 100%); }
-  .video-modal-inner video { width: 100%; max-height: 80vh; display: block; background: #000; border-radius: var(--radius); box-shadow: 0 24px 70px rgba(0,0,0,.55); }
+  .video-frame { position: relative; border-radius: var(--radius); overflow: hidden; -webkit-transform: translateZ(0); transform: translateZ(0); line-height: 0; box-shadow: 0 24px 70px rgba(0,0,0,.55); }
+  .video-modal-inner video { width: 100%; max-height: 80vh; display: block; background: #000; }
   .video-modal-close { position: absolute; top: -50px; right: 0; width: 42px; height: 42px; border: 0; border-radius: 999px; background: var(--red); color: #fff; font-size: 1.1rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,.3); }
   .video-modal-close:hover { transform: translateY(-2px); }
   @media (max-width: 760px) { .video-modal { padding: 16px; } .video-modal-close { top: -46px; } }
