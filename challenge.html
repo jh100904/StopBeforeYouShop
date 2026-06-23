@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260623191758">
+<link rel="stylesheet" href="styles.css?v=20260623213501">
 </head>
 <body>
 
@@ -18,15 +18,17 @@
     <span class="menu-brand">STOP.<br>BEFORE YOU SHOP.</span>
     <button class="menu-close" id="menuClose" aria-label="Menü schließen">✕</button>
   </div>
-  <nav class="menu-items" aria-label="Hauptmenü">
+    <nav class="menu-items" aria-label="Hauptmenü">
+    <span class="menu-group-label">Auf der Startseite</span>
     <a href="index.html">Startseite <span>↗︎</span></a>
+    <a href="index.html#videos">Videos <span>↗︎</span></a>
+    <a href="index.html#erfahrungen">Erfahrungen <span>↗︎</span></a>
+    <a href="index.html#hilfsangebote">Hilfsangebote <span>↗︎</span></a>
+    <span class="menu-group-label">Tools</span>
     <a href="challenge.html">Challenge <span>↗︎</span></a>
     <a href="selbsttest.html">Selbsttest <span>↗︎</span></a>
     <a href="rechner.html">Rechner <span>↗︎</span></a>
     <a href="tipps.html">Tipps <span>↗︎</span></a>
-    <a href="index.html#videos">Videos <span>↗︎</span></a>
-    <a href="index.html#erfahrungen">Erfahrungen <span>↗︎</span></a>
-    <a href="index.html#hilfsangebote">Hilfsangebote <span>↗︎</span></a>
   </nav>
   <img class="menu-mascot" src="assets/mascot-run-cyan-trim.png" alt="">
 </aside>
@@ -38,14 +40,16 @@
       <img src="assets/mascot-head-trim.png" alt="">
       <span class="nav-logo-text">STOP.<br>BEFORE YOU SHOP.</span>
     </a>
-    <div class="nav-links">
+        <div class="nav-links">
       <a href="index.html">Startseite</a>
       <a href="index.html#videos">Videos</a>
+      <a href="index.html#erfahrungen">Erfahrungen</a>
+      <a href="index.html#hilfsangebote">Hilfe</a>
+      <span class="nav-divider" aria-hidden="true"></span>
       <a href="challenge.html" class="active">Challenge</a>
       <a href="selbsttest.html">Selbsttest</a>
       <a href="rechner.html">Rechner</a>
       <a href="tipps.html">Tipps</a>
-      <a href="index.html#hilfsangebote">Hilfe</a>
     </div>
     <div class="nav-right">
       <button class="icon-btn hamburger-btn" id="hamburgerBtn" aria-label="Menü öffnen" aria-expanded="false">
@@ -190,7 +194,7 @@
   <div class="footer-logo">STOP. BEFORE YOU SHOP.</div>
   <div class="footer-tag">Trends vergehen. Schulden bleiben.</div>
   <img class="footer-mascot" src="assets/mascot-run-cyan-trim.png" alt="Rennendes Maskottchen">
-  <div class="footer-bar">© 2026 Stop. Before You Shop. · Bildungsprojekt · Alle Rechte vorbehalten</div>
+  <div class="footer-bar">© 2026 Stop. Before You Shop. · Bildungsprojekt · <a href="impressum.html" style="color:inherit;">Impressum &amp; Datenschutz</a></div>
 </footer>
 
 <button id="scroll-top" aria-label="Nach oben scrollen">↑</button>
@@ -203,6 +207,6 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel" src="sbys-tweaks.jsx"></script>
-<script src="script.js?v=20260623191758"></script>
+<script src="script.js?v=20260623213501"></script>
 </body>
 </html

@@ -20,6 +20,21 @@ document.addEventListener('DOMContentLoaded', function () {
     window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
   }
 
+  // === SECTION: externe Links bestaetigen (Verlassen der Seite) ===
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (!/^https?:\/\//i.test(href)) return;
+    var url;
+    try { url = new URL(href); } catch (err) { return; }
+    if (url.host === location.host) return;
+    var host = url.host.replace(/^www\./, '');
+    if (!window.confirm('Du verl\u00e4sst jetzt \u201eStop. Before You Shop.\u201c und wirst zu ' + host + ' weitergeleitet.\n\nM\u00f6chtest du fortfahren?')) {
+      e.preventDefault();
+    }
+  });
+
   // === SECTION: navigation ===
   var menuPanel = $('#menuPanel'), menuOverlay = $('#menuOverlay'), hamburger = $('#hamburgerBtn');
   function openMenu() {
@@ -82,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return '<button class="s-dot' + (i === curStory ? ' active' : '') + '" data-story="' + i + '" aria-label="Geschichte ' + (i + 1) + '"></button>';
     }).join('');
     $$('.s-dot', storiesDots).forEach(function (d) {
-      d.addEventListener('click', function () { goStory(parseInt(d.getAttribute('data-story'), 10)); });
+      d.addEventListener('click', function () { stopAuto(); goStory(parseInt(d.getAttribute('data-story'), 10)); });
     });
     updateStoryPos();
   }
@@ -103,21 +118,24 @@ document.addEventListener('DOMContentLoaded', function () {
   function goStory(i) {
     curStory = (i + stories.length) % stories.length;
     updateStoryPos();
-    resetStoryTimer();
   }
-  function resetStoryTimer() {
+  function startAuto() {
     clearInterval(storyTimer);
     storyTimer = setInterval(function () { goStory(curStory + 1); }, 5000);
+  }
+  function stopAuto() {
+    clearInterval(storyTimer);
+    storyTimer = null;
   }
   function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
-  $('#storyPrev').addEventListener('click', function () { goStory(curStory - 1); });
-  $('#storyNext').addEventListener('click', function () { goStory(curStory + 1); });
+  $('#storyPrev').addEventListener('click', function () { stopAuto(); goStory(curStory - 1); });
+  $('#storyNext').addEventListener('click', function () { stopAuto(); goStory(curStory + 1); });
   renderStories();
-  resetStoryTimer();
+  startAuto();
 
   // Submit story
   var expText = $('#expText'), expName = $('#expName'), charCount = $('#charCount');

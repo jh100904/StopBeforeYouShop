@@ -183,6 +183,9 @@
   }
   .menu-items a:hover { color: var(--mint); padding-left: 8px; }
   .menu-items a span { font-size: 1.1rem; opacity: .55; }
+  .menu-group-label { font-family: 'Inter', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--mint); margin: 18px 0 2px; }
+  .menu-items > .menu-group-label:first-child { margin-top: 0; }
+  .nav-divider { width: 1px; height: 20px; background: rgba(26,26,26,.18); align-self: center; margin: 0 5px; flex-shrink: 0; }
   .menu-mascot { margin-top: auto; align-self: center; width: 130px; opacity: .96; }
 
   /* ============ SECTION SHELL ============ */
@@ -559,8 +562,11 @@
   .acc-num { font-family: 'Anton',sans-serif; font-size: 1.2rem; color: var(--red); width: 40px; flex-shrink: 0; }
   .acc-title { flex: 1; font-family: 'Anton',sans-serif; font-size: 1.18rem; text-transform: uppercase; color: var(--dark); letter-spacing: .02em; }
   .acc-icon { width: 34px; height: 34px; border-radius: 999px; background: var(--mint); color: var(--red);
-    display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0;
+    position: relative; font-size: 0; flex-shrink: 0; transform-origin: 50% 50%;
     transition: transform .3s var(--ease), background .2s, color .2s; }
+  .acc-icon::before, .acc-icon::after { content: ""; position: absolute; top: 50%; left: 50%;
+    width: 14px; height: 2.5px; border-radius: 2px; background: currentColor; transform: translate(-50%, -50%); }
+  .acc-icon::after { transform: translate(-50%, -50%) rotate(90deg); }
   .acc-item.open .acc-icon { transform: rotate(45deg); background: var(--red); color: #fff; }
   .acc-body { max-height: 0; overflow: hidden; transition: max-height .38s var(--ease); }
   .acc-body-inner { padding: 0 24px 24px 80px; font-size: 1rem; color: #36464 6; color: #364646; line-height: 1.7; }
@@ -888,6 +894,11 @@
   .share-cta { margin-top: 24px; }
   .share-cta-label { display: block; font-weight: 700; font-size: .92rem; color: var(--dark); margin-bottom: 12px; }
   .share-cta-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  .legal-text { font-size: 1rem; color: #2a3a3a; line-height: 1.7; }
+  .legal-text p { margin: 0 0 14px; }
+  .legal-text strong { color: var(--dark); }
+  .legal-text a { color: var(--red); text-decoration: none; }
+  .legal-text a:hover { text-decoration: underline; }
 
   /* ============ VIDEO LIGHTBOX ============ */
   .video-modal { position: fixed; inset: 0; z-index: 1200; display: none; align-items: center; justify-content: center; padding: 24px; }
