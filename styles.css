@@ -814,15 +814,13 @@
   /* ============ SCROLL TOP ============ */
   #scroll-top {
     position: fixed; bottom: 28px; right: 28px; z-index: 90;
-    width: 58px; height: 58px; border-radius: 999px; border: none; cursor: pointer;
-    background: #fff; padding: 0; overflow: visible;
+    width: 56px; height: 56px; border-radius: 999px; border: none; cursor: pointer;
+    background: var(--red); color: #fff; font-size: 1.5rem;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 10px 26px rgba(0,0,0,.2);
+    box-shadow: 0 10px 26px rgba(232,23,58,.4);
     opacity: 0; pointer-events: none; transform: translateY(14px) scale(.9);
     transition: opacity .3s, transform .3s var(--ease);
   }
-  #scroll-top img { width: 82%; height: 82%; object-fit: contain; }
-  #scroll-top .st-arrow { position: absolute; top: -3px; right: -3px; width: 22px; height: 22px; border-radius: 999px; background: var(--red); color: #fff; font-size: .82rem; line-height: 1; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 7px rgba(0,0,0,.28); }
   #scroll-top.show { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
   #scroll-top:hover { transform: translateY(-4px) scale(1.06); }
   .scroll-mascot {
