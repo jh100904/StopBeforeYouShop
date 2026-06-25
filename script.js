@@ -430,8 +430,8 @@ document.addEventListener('DOMContentLoaded', function () {
     { max: 4, label: "Sehr bewusst", text: "Du triffst Kaufentscheidungen extrem überlegt. Trends ziehen an dir vorbei, ohne Spuren auf deinem Konto zu hinterlassen.", emoji: "assets/mascot-standing-trim.png" },
     { max: 9, label: "Bewusst unterwegs", text: "Du hast ein gesundes Verhältnis zu Konsum. Ein paar kleine Reflexe helfen dir, ganz souverän zu bleiben.", emoji: "assets/mascot-head-trim.png" },
     { max: 15, label: "Im Mittelfeld", text: "Mal überlegt, mal spontan. Unsere Tipps zeigen dir, wie du häufiger bewusst entscheidest.", emoji: "assets/mascot-wave-trim.png" },
-    { max: 20, label: "Eher trendanfällig", text: "Impulskäufe spielen eine spürbare Rolle bei dir. Mit ein paar Strategien lässt sich das aber gut in den Griff bekommen.", emoji: "assets/mascot-selfie-trim.png" },
-    { max: 24, label: "Stark trendanfällig", text: "Trends bestimmen deinen Konsum stark. Keine Sorge – die Warte-3-Tage-Challenge und unsere Tipps sind genau für dich gemacht.", emoji: "assets/mascot-run-trim.png" }
+    { max: 20, label: "Eher impulsiv", text: "Impulskäufe spielen eine spürbare Rolle bei dir. Mit ein paar Strategien lässt sich das aber gut in den Griff bekommen.", emoji: "assets/mascot-selfie-trim.png" },
+    { max: 24, label: "Stark impulsiv", text: "Impulskäufe bestimmen deinen Konsum stark. Keine Sorge – die Warte-3-Tage-Challenge und unsere Tipps sind genau für dich gemacht.", emoji: "assets/mascot-run-trim.png" }
   ];
   var qIdx = 0, answers = [];
   var quizCard = $('#quizCard'), quizResult = $('#quizResult');
@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   $('#shareResult').addEventListener('click', function () {
     var label = $('#resultLabel').textContent;
-    var text = 'Mein Ergebnis im Trendanfälligkeits-Check: „' + label + '“ – teste dich selbst auf Stop. Before You Shop. #DreiTageWartenChallenge';
+    var text = 'Mein Ergebnis im Impulskauf-Check: „' + label + '“ – teste dich selbst auf Stop. Before You Shop. #DreiTageWartenChallenge';
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () { showToast('Ergebnis kopiert!'); })
         .catch(function () { showToast('Kopieren nicht möglich.'); });
@@ -821,7 +821,7 @@ document.addEventListener('DOMContentLoaded', function () {
       sparcounter: "So viel Geld – einfach durch kurzes Warten.",
       challenge: "3 Tage warten. Schaffst du das?",
       tipps: "Mein Lieblingstrick: einfach kurz abwarten.",
-      quiz: "Mal ehrlich – wie trendanfällig bist du?",
+      quiz: "Mal ehrlich – wie impulsiv kaufst du?",
       parkplatz: "Park deinen Wunsch – und schlaf 3 Tage drüber.",
       rechner: "Rechne mal, wie lang du dafür arbeitest…",
       erfahrungen: "Echte Geschichten. Vielleicht bald deine?",
