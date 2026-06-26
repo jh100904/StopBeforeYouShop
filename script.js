@@ -4,6 +4,21 @@ document.addEventListener('DOMContentLoaded', function () {
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   function escapeHtml(str){return String(str).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 
+  // === SECTION: Praesentations-Reset (?reset leert alle gespeicherten Zustaende) ===
+  (function () {
+    if (!/(?:\?|&)reset(?:\b|=)/.test(location.search) && location.hash !== '#reset') return;
+    function wipe(store) {
+      try {
+        var keys = [];
+        for (var i = 0; i < store.length; i++) { var k = store.key(i); if (k && k.indexOf('sbys_') === 0) keys.push(k); }
+        keys.forEach(function (k) { store.removeItem(k); });
+      } catch (e) {}
+    }
+    try { wipe(window.localStorage); } catch (e) {}
+    try { wipe(window.sessionStorage); } catch (e) {}
+    if (window.history && history.replaceState) { history.replaceState(null, '', location.pathname); }
+  })();
+
   // === SECTION: global helpers ===
   var toastEl = $('#toast'), toastTimer;
   function showToast(msg) {
